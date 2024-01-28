@@ -1,0 +1,46 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model Product_Management.Models.DTO.LoginRequestDTO;
+
+@{
+    ViewData["Title"] = "Login";
+}
+<div class="container-fluid row d-flex align-items-center justify-content-center rounded">
+    <div class="col-md-4 card p-3">
+        <h2 class="text-center">Login</h2>
+        <form asp-action="Login" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="mb-2">
+                <label asp-for="Email"></label>
+                <input type="email" asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="mb-2">
+                <label asp-for="Password"></label>
+                <input type="password" asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="mb-2 form-check">
+                <label class="form-check-label">
+                    <input asp-for="RememberMe" class="form-check-input" /> @Html.DisplayNameFor(x => x.RememberMe)
+                </label>
+            </div>
+            <div class="row mt-2">
+                <div class="col-8">
+                    <a asp-action="Register" class="text-decoration-none float-start mt-2">Don't Have Account?</a>
+                </div>
+                <div class="col-4">
+                    <input type="submit" value="Login" class="btn float-end btn-primary" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Client side validation -->
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

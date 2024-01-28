@@ -33,12 +33,22 @@
             </div>
             <div class="mb-1">
                 <label asp-for="Password"></label>
-                <input type="password" asp-for="Password" class="form-control" />
+                <div class="input-group">
+                    <input type="password" asp-for="Password" class="form-control" id="passwordInput" />
+                    <span class="input-group-text" id="togglePassword">
+                        <i class="bi bi-eye" id="eyeIcon"></i>
+                    </span>
+                </div>
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
             <div class="mb-1">
                 <label asp-for="ConfirmPassword"></label>
-                <input type="password" asp-for="ConfirmPassword" class="form-control" />
+                <div class="input-group">
+                    <input type="password" asp-for="ConfirmPassword" class="form-control" id="confirmPasswordInput" />
+                    <span class="input-group-text" id="toggleConfirmPassword">
+                        <i class="bi bi-eye" id="confirmEyeIcon"></i>
+                    </span>
+                </div>
                 <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
             </div>
             <div class="row">
@@ -52,6 +62,38 @@
         </form>
     </div>
 </div>
+
+
+<script>
+    const passwordInput = document.getElementById('passwordInput');
+    const eyeIcon = document.getElementById('eyeIcon');
+    const togglePassword = document.getElementById('togglePassword');
+
+    const confirmPasswordInput = document.getElementById('confirmPasswordInput');
+    const confirmEyeIcon = document.getElementById('confirmEyeIcon');
+    const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
+
+    togglePassword.addEventListener('click', function () {
+        togglePasswordVisibility(passwordInput, eyeIcon);
+    });
+
+    toggleConfirmPassword.addEventListener('click', function () {
+        togglePasswordVisibility(confirmPasswordInput, confirmEyeIcon);
+    });
+
+    function togglePasswordVisibility(inputField, eyeIcon) {
+        if (inputField.type === 'password') {
+            inputField.type = 'text';
+            eyeIcon.classList.remove('bi-eye');
+            eyeIcon.classList.add('bi-eye-slash');
+        } else {
+            inputField.type = 'password';
+            eyeIcon.classList.remove('bi-eye-slash');
+            eyeIcon.classList.add('bi-eye');
+        }
+    }
+</script>
+
 
 @section Scripts {
     @{

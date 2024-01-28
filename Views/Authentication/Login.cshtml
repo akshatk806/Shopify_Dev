@@ -18,12 +18,18 @@
             </div>
             <div class="mb-2">
                 <label asp-for="Password"></label>
-                <input type="password" asp-for="Password" class="form-control" />
+                @*<input type="password" asp-for="Password" class="form-control" />*@
+                <div class="input-group">
+                    <input type="password" asp-for="Password" class="form-control" id="passwordInput" />
+                    <span class="input-group-text" id="togglePassword">
+                        <i class="bi bi-eye" id="eyeIcon"></i>
+                    </span>
+                </div>
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
             <div class="mb-2 form-check">
                 <label class="form-check-label">
-                    <input asp-for="RememberMe" class="form-check-input" /> @Html.DisplayNameFor(x => x.RememberMe)
+                    <input asp-for="RememberMe" class="form-check-input" checked /> @Html.DisplayNameFor(x => x.RememberMe)
                 </label>
             </div>
             <div class="row mt-2">
@@ -37,6 +43,24 @@
         </form>
     </div>
 </div>
+
+<script>
+    const passwordInput = document.getElementById('passwordInput');
+    const eyeIcon = document.getElementById('eyeIcon');
+    const togglePassword = document.getElementById('togglePassword');
+
+    togglePassword.addEventListener('click', function () {
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            eyeIcon.classList.remove('bi-eye');
+            eyeIcon.classList.add('bi-eye-slash');
+        } else {
+            passwordInput.type = 'password';
+            eyeIcon.classList.remove('bi-eye-slash');
+            eyeIcon.classList.add('bi-eye');
+        }
+    });
+</script>
 
 <!-- Client side validation -->
 @section Scripts {

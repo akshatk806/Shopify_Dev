@@ -44,7 +44,7 @@ namespace Product_Management.Controllers
                     }
                     if (User.IsInRole("User"))
                     {
-                        return RedirectToAction("Privacy", "Home");
+                        return RedirectToAction("Index", "Home");
                     }
                 }
                 else
@@ -66,6 +66,10 @@ namespace Product_Management.Controllers
             if(User.IsInRole("Admin"))
             {
                 return View();
+            }
+            else if(User.IsInRole("User"))
+            {
+                return RedirectToAction("Index", "Home");
             }
             return View();   
         }

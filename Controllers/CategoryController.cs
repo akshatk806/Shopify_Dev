@@ -37,6 +37,7 @@ namespace Product_Management.Controllers
 
             await context.Categories.AddAsync(newCategory);
             await context.SaveChangesAsync();
+            TempData["success"] = "Category Added Successfully";
 
             return RedirectToAction("Index", "Category");
         }

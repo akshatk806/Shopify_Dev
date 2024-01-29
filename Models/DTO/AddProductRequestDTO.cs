@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Product_Management.Models.DomainModels;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Product_Management.Models.DTO
 {
@@ -15,5 +17,12 @@ namespace Product_Management.Models.DTO
         public int ProductPrice { get; set; }
 
         public DateTime ProductCreatedAt { get; set; } = DateTime.Now;
+
+        public int CategoryId { get; set; }
+
+        // navigation property
+        [ForeignKey("CategoryId")]
+        public Category Category { get; set; }
+
     }
 }

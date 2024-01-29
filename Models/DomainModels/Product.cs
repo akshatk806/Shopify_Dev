@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Product_Management.Models.DomainModels
 {
@@ -18,6 +19,15 @@ namespace Product_Management.Models.DomainModels
         [Required]
         public int ProductPrice { get; set; }
 
-        public DateTime ProductCreatedAt { get; set; } = DateTime.Now;  
+        public DateTime ProductCreatedAt { get; set; } = DateTime.Now;
+
+        public int CategoryId { get; set; }
+
+        // navigation property
+        [ForeignKey("CategoryId")]
+        public Category Category { get; set; }
+
+        // image url
+        public string ImageURL { get; set; } = "";
     }
 }

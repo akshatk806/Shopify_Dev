@@ -26,6 +26,16 @@
                                placeholder="Product Price">
                         <label asp-for="ProductPrice">Product Price (in Rs.)</label>
                     </div>
+                    
+                    <div class="form-floating mb-3">
+                        <select asp-for="CategoryId" asp-items="ViewBag.CategoryList" class="form-select form-select-sm mb-3">
+                            <option disabled selected>--Select Category--</option>
+                        </select>
+                        <label asp-for="CategoryId" class="ms-2"></label>
+                        <span asp-validation-for="CategoryId" class="text-danger"></span>
+                    </div>
+
+
 
                     <div>
                         <button class="btn btn-primary btn-sm" type="submit">

@@ -5,7 +5,7 @@ namespace Product_Management.Models.DomainModels
     public class Category
     {
         [Key]
-        public int Id { get; set; }
+        public int CategoryId { get; set; }
 
         [Required]
         public string CategoryName { get; set; }

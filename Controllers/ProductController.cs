@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Product_Management.Data;
 using Product_Management.Models.DomainModels;
@@ -18,6 +19,7 @@ namespace Product_Management.Controllers
         public async Task<IActionResult> Index()
         {
             var ProductList = await context.Products.ToListAsync();
+            context.Products.Include(x => x.Category).Include(x => x.CategoryId);
             var OrderedProduct = ProductList.OrderByDescending(x => x.ProductCreatedAt).ToList();
             return View(OrderedProduct);
         }
@@ -26,6 +28,15 @@ namespace Product_Management.Controllers
         [HttpGet]
         public IActionResult Add()
         {
+            // projection for dropdown
+            IEnumerable<SelectListItem> categoryList = context.Categories.Select(x => new SelectListItem
+            {
+                Text = x.CategoryName,
+                Value = x.CategoryId.ToString()
+            });
+
+            //pass category list to view
+            ViewBag.CategoryList = categoryList;
             return View();
         }
 
@@ -38,7 +49,9 @@ namespace Product_Management.Controllers
                 ProductName = request.ProductName,
                 ProductDesc = request.ProductDesc,
                 ProductPrice = request.ProductPrice,
-                ProductCreatedAt = DateTime.Now
+                ProductCreatedAt = DateTime.Now,
+                CategoryId = request.CategoryId,
+                Category = request.Category
             };
 
             await context.Products.AddAsync(newProduct);

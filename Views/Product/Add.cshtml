@@ -1,0 +1,44 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@model Product_Management.Models.DTO.AddProductRequestDTO;
+
+<div class="container-fluid px-4 mb-5">
+    <div class="row g-4">
+        <div class="col-sm-12 col-xl-6">
+            <div class="bg-light rounded h-100 p-4">
+                <h4 class="mb-4">ADD PRODUCT</h4>
+                <form method="post" asp-action="Add" asp-controller="Product">
+                    <div class="form-floating mb-3">
+                        <input asp-for="ProductName" type="text" class="form-control" id="floatingInput"
+                               placeholder="Product Name">
+                        <label asp-for="ProductName">Product Name</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <textarea asp-for="ProductDesc" class="form-control" id="floatingTextarea" style="height: 150px;"
+                               placeholder="Product Description">
+                        </textarea>
+                        <label asp-for="ProductDesc">Product Description</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="ProductPrice" type="text" class="form-control" id="floatingInput"
+                               placeholder="Product Price">
+                        <label asp-for="ProductPrice">Product Price (in Rs.)</label>
+                    </div>
+
+                    <div>
+                        <button class="btn btn-primary btn-sm" type="submit">
+                            <i class="bi bi-plus-circle"></i>
+                            Add
+                        </button>
+                        <a asp-controller="Product" asp-action="Index" class="btn btn-danger btn-sm float-end" type="submit">
+                            <i class="bi bi-arrow-left"></i>
+                            Back to List
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

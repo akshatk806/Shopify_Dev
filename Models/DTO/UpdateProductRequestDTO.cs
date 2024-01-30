@@ -1,6 +1,7 @@
 ﻿using Product_Management.Models.DomainModels;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace Product_Management.Models.DTO
 {
@@ -20,6 +21,9 @@ namespace Product_Management.Models.DTO
         [Required]
         public int ProductPrice { get; set; }
 
-        public DateTime ProductCreatedAt { get; set; } = DateTime.Now;
+        [ValidateNever]
+        public Category Category { get; set; }
+
+        public int CategoryId { get; set; }
     }
 }

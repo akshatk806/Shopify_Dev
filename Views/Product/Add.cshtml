@@ -1,8 +1,8 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-
-@model Product_Management.Models.DTO.AddProductRequestDTO;
+﻿@model Product_Management.Models.DTO.AddProductRequestDTO;
+@{
+    ViewData["Title"] = "Add Product";
+    var categoryList = ViewBag.CategoryList as List<Product_Management.Models.DomainModels.Category>;
+}
 
 <div class="container-fluid px-4 mb-5">
     <div class="row g-4">
@@ -28,10 +28,17 @@
                     </div>
                     
                     <div class="form-floating mb-3">
-                        <select asp-for="CategoryId" asp-items="ViewBag.CategoryList" class="form-select form-select-sm mb-3">
+                        <select asp-for="CategoryId" class="form-select form-select-sm mb-3" aria-label="Default select example" placeholder="Select Category">
                             <option disabled selected>--Select Category--</option>
+                            @if (categoryList != null)
+                            {
+                                @foreach (var x in categoryList)
+                                {
+                                    <option value="@x.CategoryId">@x.CategoryName</option>
+                                }
+                            }
                         </select>
-                        <label asp-for="CategoryId" class="ms-2"></label>
+                        <label>Select Category</label>
                         <span asp-validation-for="CategoryId" class="text-danger"></span>
                     </div>
 

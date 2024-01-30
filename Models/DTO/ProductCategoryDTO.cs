@@ -16,6 +16,6 @@ namespace Product_Management.Models.DTO
 
         public int ProductPrice { get; set; }
 
-        public DateTime ProductCreatedAt { get; set; } = DateTime.Now;
+        public DateTime ProductCreatedAt { get; set; }
     }
 }

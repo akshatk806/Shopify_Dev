@@ -19,7 +19,7 @@ namespace Product_Management.Models.DomainModels
         [Required]
         public int ProductPrice { get; set; }
 
-        public DateTime ProductCreatedAt { get; set; } = DateTime.Now;
+        public DateTime ProductCreatedAt { get; set; }
 
         public int CategoryId { get; set; }
 

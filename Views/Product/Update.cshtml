@@ -1,4 +1,8 @@
-﻿@model Product_Management.Models.DomainModels.Product;
+﻿@model Product_Management.Models.DTO.UpdateProductRequestDTO;
+@{
+    ViewData["Title"] = "Update Product";
+    var categoryList = ViewBag.CategoryList as List<Product_Management.Models.DomainModels.Category>;
+}
 
 
 <div class="container-fluid px-4 mb-5">
@@ -24,6 +28,23 @@
                                placeholder="Product Price">
                         <label asp-for="ProductPrice">Product Price (in Rs.)</label>
                     </div>
+
+                    <div class="form-floating mb-3">
+                        <select asp-for="CategoryId" class="form-select form-select-sm mb-3" aria-label="Default select example" placeholder="Select Category">
+                            <option selected disabled>--Select Category--</option>
+                            @if (categoryList != null)
+                            {
+                                @foreach (var x in categoryList)
+                                {
+                                    <option value="@x.CategoryId">@x.CategoryName</option>
+                                }
+                            }
+                        </select>
+                        <label>Select Category</label>
+                        <span asp-validation-for="CategoryId" class="text-danger"></span>
+                    </div>
+
+
 
                     <div>
                         <button class="btn btn-warning btn-sm" type="submit">

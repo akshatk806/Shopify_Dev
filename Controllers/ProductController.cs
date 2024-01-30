@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Product_Management.Data;
 using Product_Management.Models.DomainModels;
@@ -48,14 +47,10 @@ namespace Product_Management.Controllers
 
         // Add
         [HttpGet]
-        public IActionResult Add()
+        public async Task<IActionResult> Add()
         {
             // projection for dropdown
-            IEnumerable<SelectListItem> categoryList = context.Categories.Select(x => new SelectListItem
-            {
-                Text = x.CategoryName,
-                Value = x.CategoryId.ToString()
-            });
+            var categoryList = await context.Categories.ToListAsync();
 
             //pass category list to view
             ViewBag.CategoryList = categoryList;
@@ -98,15 +93,25 @@ namespace Product_Management.Controllers
 
         // Update
         [HttpGet("/id")]
-        public IActionResult Update(Guid id)
+        public async Task<IActionResult> Update(Guid id)
         {
             var product = context.Products.FirstOrDefault(x => x.ProductId == id);
-            if (product == null)
+            if(product == null)
             {
                 return NotFound();
             }
+            var productList = new UpdateProductRequestDTO()
+            {
+                ProductId = product.ProductId,
+                ProductName = product.ProductName,
+                ProductDesc = product.ProductDesc,
+                ProductPrice = product.ProductPrice,
+                CategoryId = product.CategoryId,
+                Category = product.Category
+            };
+            ViewBag.CategoryList = await context.Categories.ToListAsync();
 
-            return View(product);
+            return View(productList);
         }
 
         [HttpPost("/id")]
@@ -125,7 +130,8 @@ namespace Product_Management.Controllers
             existingProduct.ProductName = request.ProductName;
             existingProduct.ProductDesc = request.ProductDesc;
             existingProduct.ProductPrice = request.ProductPrice;
-            existingProduct.ProductCreatedAt = request.ProductCreatedAt;
+            existingProduct.CategoryId = request.CategoryId;
+            existingProduct.Category = request.Category;
 
             await context.SaveChangesAsync();
             TempData["productsuccess"] = "Product Updated Successfully";

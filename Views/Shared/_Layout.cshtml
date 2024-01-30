@@ -2,6 +2,10 @@
 @using Product_Management.Models.DomainModels
 @inject SignInManager<UserModel> signInManager;
 
+@{
+    var categoryList = ViewBag.CategoryList as List<Product_Management.Models.DomainModels.Category>;
+}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -101,16 +105,23 @@
                         </div>
 
                         <div class="nav-item dropdown">
-                            <a href="#" class="nav-link dropdown-toggle @(IsCurrentPageController("Authentication") ? "active" : "")" data-bs-toggle="dropdown"><i class="fa fa-tshirt me-2"></i>Manage Users</a>
+                            <a href="#" class="nav-link dropdown-toggle @(IsCurrentPageController("Authentication") ? "active" : "")" data-bs-toggle="dropdown"><i class="fa fa-user me-2"></i>Manage Users</a>
                             <div class="dropdown-menu bg-transparent border-0">
                                 <a asp-controller="Authentication" asp-action="Register" class="dropdown-item">Add Users</a>
                             </div>
                         </div>
 
                         <div class="nav-item dropdown">
-                            <a href="#" class="nav-link dropdown-toggle @(IsCurrentPageController("Product") ? "active" : "")" data-bs-toggle="dropdown"><i class="fa fa-user me-2"></i>Manage Products</a>
+                            <a href="#" class="nav-link dropdown-toggle @(IsCurrentPageController("Product") ? "active" : "")" data-bs-toggle="dropdown"><i class="fa fa-tshirt me-2"></i>Manage Products</a>
                             <div class="dropdown-menu bg-transparent border-0">
                                 <a asp-controller="Product" asp-action="Index" class="dropdown-item">All Products</a>
+                                @if(categoryList != null)
+                                {
+                                    @foreach(var category in categoryList)
+                                    {
+                                        <a class="dropdown-item">@category.CategoryName</a>
+                                    }
+                                }
                             </div>
                         </div>
                     </div>

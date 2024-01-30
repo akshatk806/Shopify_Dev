@@ -25,7 +25,7 @@ namespace Product_Management.Controllers
             */
 
             var productList = await context.Products.ToListAsync();
-            var categoryList = await context.Categories.ToListAsync();
+            List<Category> categoryList = await context.Categories.ToListAsync();
             var finalProduct = productList.Join(
                             categoryList,
                             product => product.CategoryId,
@@ -41,6 +41,8 @@ namespace Product_Management.Controllers
                                 CategoryName = category.CategoryName
                             }
                 ).OrderByDescending(x => x.ProductCreatedAt).ToList();
+
+            ViewBag.CategoryList = categoryList;
 
             return View(finalProduct);
         }

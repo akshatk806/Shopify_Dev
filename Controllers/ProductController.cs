@@ -8,6 +8,7 @@ using Product_Management.Models.DTO;
 namespace Product_Management.Controllers
 {
     [Authorize(Roles = "Admin")]
+    //[Route("Products")]
     public class ProductController : Controller
     {
         private readonly ApplicationDbContext context;
@@ -45,6 +46,19 @@ namespace Product_Management.Controllers
             ViewBag.CategoryList = categoryList;
 
             return View(finalProduct);
+            //return PartialView("_ProductList", finalProduct);
+        }
+
+        //[HttpGet("GetProductByCategory/{CategoryId}")]
+        public async Task<IActionResult> GetProductByCategory(int CategoryId)
+        {
+            List<Product> SelectedProductList = await context.Products.ToListAsync();
+            if (SelectedProductList.Count != 0)
+            {
+                return BadRequest();
+            }
+            ViewBag.SelectedProductListByCategory = SelectedProductList;
+            return View(SelectedProductList);
         }
 
         // Add

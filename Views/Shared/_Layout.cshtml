@@ -119,7 +119,7 @@
                                 {
                                     @foreach(var category in categoryList)
                                     {
-                                        <a class="dropdown-item">@category.CategoryName</a>
+                                        <a class="dropdown-item" asp-action="GetProductByCategory" asp-controller="Product" asp-route-id="@category.CategoryId">@category.CategoryName</a>
                                     }
                                 }
                             </div>

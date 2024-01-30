@@ -1,0 +1,117 @@
+﻿@model List<Product_Management.Models.DomainModels.Product>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Product-Management</title>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Product_Management.styles.css" asp-append-version="true" />
+
+
+
+    <!-- Favicon -->
+    <link href="../../Content/img/favicon.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="../../Content/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="../../Content/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="../../Content/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="../../Content/css/style.css" rel="stylesheet">
+
+
+    <!-- Toaster -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+</head>
+
+
+<body>
+    <partial name="_Notification" />
+    <h1>Hi</h1>
+    <div class="container-fluid px-4 small">
+        <div class="row">
+            <div class="col-6">
+                <h4 class="mb-4">PRODUCT LIST</h4>
+            </div>
+            <div class="col-6 text-end">
+                <a class="btn btn-primary" asp-controller="Product" asp-action="Add">
+                    <i class="bi bi-plus-circle"></i>
+                    ADD NEW PRODUCT
+                </a>
+            </div>
+        </div>
+        <div class="row g-4">
+            <div class="col-12">
+                <div class="bg-light rounded h-100 p-4">
+                    @if (Model.Count == 0)
+                    {
+                        <h1 class="text-center">NO PRODUCT ADDED AS OF NOW!</h1>
+                    }
+                    else
+                    {
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Product Name</th>
+                                    <th scope="col">Description</th>
+                                    <th scope="col">Price (in Rs.)</th>
+                                    <th scope="col">Category</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var product in Model)
+                                {
+                                    <tr>
+                                        <td>@product.ProductName</td>
+                                        <td>@product.ProductDesc</td>
+                                        <td>@product.ProductPrice</td>
+                                        <td></td>
+                                        <td>
+                                            <div class="btn-group" role="group">
+                                                <a asp-controller="Product" asp-action="Update" asp-route-id="@product.ProductId" class="btn small btn-sm btn-warning mx-2">
+                                                    <i class="bi bi-pencil-square"></i> Update
+                                                </a>
+                                                <a asp-controller="Product" asp-action="Index" class="btn small btn-sm btn-danger">
+                                                    <i class="bi bi-trash-fill"></i> Deactive
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../../Content/lib/chart/chart.min.js"></script>
+    <script src="../../Content/lib/easing/easing.min.js"></script>
+    <script src="../../Content/lib/waypoints/waypoints.min.js"></script>
+    <script src="../../Content/lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="../../Content/lib/tempusdominus/js/moment.min.js"></script>
+    <script src="../../Content/lib/tempusdominus/js/moment-timezone.min.js"></script>
+    <script src="../../Content/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+
+    <!-- Template Javascript -->
+    <script src="../../Content/js/main.js"></script>
+
+</body>

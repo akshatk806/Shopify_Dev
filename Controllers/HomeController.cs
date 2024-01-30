@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Product_Management.Data;
 using Product_Management.Models;
 using System.Diagnostics;
 
@@ -7,14 +8,20 @@ namespace Product_Management.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly ApplicationDbContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
         public IActionResult Index()
         {
+            var categoryList = _context.Categories.ToList();
+
+            //pass category list to view
+            ViewBag.CategoryList = categoryList;
             return View();
         }
 

@@ -26,6 +26,10 @@ namespace Product_Management.Controllers
             {
                 return RedirectToAction("Index", "Home");
             }
+            else if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+            {
+                return RedirectToAction("Index", "Admin");
+            }
             return View();
         }
 

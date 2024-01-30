@@ -8,7 +8,7 @@ using Product_Management.Models.DTO;
 namespace Product_Management.Controllers
 {
     [Authorize(Roles = "Admin")]
-    //[Route("Products")]
+    [Route("Product")]
     public class ProductController : Controller
     {
         private readonly ApplicationDbContext context;
@@ -16,6 +16,7 @@ namespace Product_Management.Controllers
         {
             this.context = context;
         }
+        [HttpGet("/AllProducts")]
         public async Task<IActionResult> Index()
         {
             /*
@@ -49,20 +50,20 @@ namespace Product_Management.Controllers
             //return PartialView("_ProductList", finalProduct);
         }
 
-        //[HttpGet("GetProductByCategory/{CategoryId}")]
-        public async Task<IActionResult> GetProductByCategory(int CategoryId)
+        [HttpGet("GetProductByCategory/{categoryId}")]
+        public async Task<IActionResult> GetProductByCategory(int categoryId)
         {
-            List<Product> SelectedProductList = await context.Products.ToListAsync();
-            if (SelectedProductList.Count != 0)
+            var SelectedProductList = await context.Products.Include(x => x.Category).Where(x => x.CategoryId == categoryId).ToListAsync();
+            if (SelectedProductList.Count == 0)
             {
-                return BadRequest();
+                return BadRequest("No Result");
             }
             ViewBag.SelectedProductListByCategory = SelectedProductList;
             return View(SelectedProductList);
         }
 
         // Add
-        [HttpGet]
+        [HttpGet("/AddProduct")]
         public async Task<IActionResult> Add()
         {
             // projection for dropdown
@@ -73,7 +74,7 @@ namespace Product_Management.Controllers
             return View();
         }
 
-        [HttpPost]
+        [HttpPost("/AddProduct")]
         public async Task<IActionResult> Add(AddProductRequestDTO request)
         {
             var newProduct = new Product()
@@ -108,7 +109,7 @@ namespace Product_Management.Controllers
 
 
         // Update
-        [HttpGet("/id")]
+        [HttpGet("/UpdateProduct/{id}")]
         public async Task<IActionResult> Update(Guid id)
         {
             var product = context.Products.FirstOrDefault(x => x.ProductId == id);
@@ -130,7 +131,7 @@ namespace Product_Management.Controllers
             return View(productList);
         }
 
-        [HttpPost("/id")]
+        [HttpPost("/UpdateProduct/{id}")]
         public async Task<IActionResult> Update(UpdateProductRequestDTO request)
         {
             if (!ModelState.IsValid)

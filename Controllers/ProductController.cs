@@ -18,10 +18,32 @@ namespace Product_Management.Controllers
         }
         public async Task<IActionResult> Index()
         {
+            /*
             var ProductList = await context.Products.ToListAsync();
             context.Products.Include(x => x.Category).Include(x => x.CategoryId);
             var OrderedProduct = ProductList.OrderByDescending(x => x.ProductCreatedAt).ToList();
             return View(OrderedProduct);
+            */
+
+            var productList = await context.Products.ToListAsync();
+            var categoryList = await context.Categories.ToListAsync();
+            var finalProduct = productList.Join(
+                            categoryList,
+                            product => product.CategoryId,
+                            category => category.CategoryId,
+                            (product, category) => new ProductCategoryDTO
+                            {
+                                ProductId = product.ProductId,
+                                ProductName = product.ProductName,
+                                ProductDesc = product.ProductDesc,
+                                ProductPrice = product.ProductPrice,
+                                ProductCreatedAt = product.ProductCreatedAt,
+                                CategoryId = category.CategoryId,
+                                CategoryName = category.CategoryName
+                            }
+                ).OrderByDescending(x => x.ProductCreatedAt).ToList();
+
+            return View(finalProduct);
         }
 
         // Add
@@ -88,7 +110,7 @@ namespace Product_Management.Controllers
         }
 
         [HttpPost("/id")]
-        public async Task<IActionResult> Update(Product request)
+        public async Task<IActionResult> Update(UpdateProductRequestDTO request)
         {
             if (!ModelState.IsValid)
             {

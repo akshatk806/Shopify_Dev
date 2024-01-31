@@ -1,6 +1,8 @@
 ﻿@*model List<Product_Management.Models.DomainModels.Product>*@
 @model List<Product_Management.Models.DTO.ProductCategoryDTO>
-
+@{
+    var categoryList = ViewBag.CategoryList as List<Product_Management.Models.DomainModels.Category>;
+}
 <partial name="_Notification" />
 
 <div class="container-fluid px-4 small">
@@ -24,6 +26,15 @@
                 }
                 else
                 {
+                    <div class="float-end">
+                        <select class="form-control m-2" id="FilterByCategory">
+                            <option value="">All</option>
+                            @foreach (var category in categoryList)
+                            {
+                                <option value="@category.CategoryName">@category.CategoryName</option>
+                            }
+                        </select>
+                    </div>
                     <table id="myTable" class="table cell-border">
                         <thead>
                             <tr>

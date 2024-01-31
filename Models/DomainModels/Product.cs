@@ -26,8 +26,5 @@ namespace Product_Management.Models.DomainModels
         // navigation property
         [ForeignKey("CategoryId")]
         public Category Category { get; set; }
-
-        // image url
-        public string ImageURL { get; set; } = "";
     }
 }

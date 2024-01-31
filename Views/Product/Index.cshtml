@@ -24,13 +24,14 @@
                 }
                 else
                 {
-                    <table class="table table-bordered">
+                    <table id="myTable" class="table cell-border">
                         <thead>
                             <tr>
                                 <th scope="col">Product Name</th>
                                 <th scope="col">Description</th>
                                 <th scope="col">Price (in Rs.)</th>
                                 <th scope="col">Category</th>
+                                <th scope="col">Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -60,3 +61,7 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script src="~/js/ProductTable.js"></script>
+}

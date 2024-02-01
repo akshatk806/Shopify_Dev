@@ -205,6 +205,7 @@ namespace Product_Management.Controllers
             }
             product.IsActive = false;
             await context.SaveChangesAsync();
+            TempData["sweetalert"] = "Are you sure want to deactivate the product";
             return RedirectToAction("Index", "Product");
         }
     }

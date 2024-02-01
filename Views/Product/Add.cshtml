@@ -27,9 +27,12 @@
                         <label asp-for="ProductPrice">Product Price (in Rs.)</label>
                     </div>
 
-                    <div class="mb-3">
-                        <label class="form-label"></label>
-                        <input class="form-control" type="file" id="ImagePath" asp-for="ImagePath">
+                    <div class="form-floating mb-3">
+                        <label class="form-label" style="top:-17px;">Upload Image</label>
+                        <input class="form-control" type="file" id="ChooseImage" asp-for="ImagePath">
+                        <div class="col-4">
+                            <img src="https://cdn.iconscout.com/icon/free/png-512/free-image-preview-2715690-2265750.png?f=webp&w=512" id="PreviewImage" class="mt-1" style="width:100px; height:100px; border:1px solid black; border-radius:10px; padding:10px" alt="Preview Image" />
+                        </div>
                     </div>
 
                     <div class="form-floating mb-3">
@@ -64,3 +67,7 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script src="~/js/Preview_Image.js"></script>
+}

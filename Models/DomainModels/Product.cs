@@ -28,6 +28,9 @@ namespace Product_Management.Models.DomainModels
 
         public string ProductImageURL { get; set; }
 
+        [NotMapped]
+        public IFormFile ImagePath { get; set; }
+
         public int CategoryId { get; set; }
 
         // navigation property

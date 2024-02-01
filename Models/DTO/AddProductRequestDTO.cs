@@ -25,7 +25,7 @@ namespace Product_Management.Models.DTO
         public bool IsTrending { get; set; } = false;
 
         public int CategoryId { get; set; }
-
+        public string ProductImageURL { get; set; }
         public IFormFile ImagePath { get; set; }
 
         // navigation property

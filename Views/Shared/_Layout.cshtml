@@ -2,9 +2,6 @@
 @using Product_Management.Models.DomainModels
 @inject SignInManager<UserModel> signInManager;
 
-@{
-    var categoryList = ViewBag.CategoryList as List<Product_Management.Models.DomainModels.Category>;
-}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -95,13 +92,7 @@
                     </div>
                     <div class="navbar-nav w-100">
                         <a asp-area="" asp-controller="Admin" asp-action="Index" class="nav-item nav-link @(IsCurrentPage("Admin", "Index") ? "active" : "")"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
-
-                        <div class="nav-item dropdown">
-                            <a href="#" class="nav-link dropdown-toggle @(IsCurrentPageController("Category") ? "active" : "")" data-bs-toggle="dropdown"><i class="fa fa-cog me-2"></i>Categories</a>
-                            <div class="dropdown-menu bg-transparent border-0">
-                                <a asp-controller="Category" asp-action="Index" class="dropdown-item">Add Categories</a>
-                            </div>
-                        </div>
+                        <a asp-area="" asp-controller="Category" asp-action="Index" class="nav-item nav-link @(IsCurrentPageController("Category") ? "active" : "")"><i class="fa fa-cog me-2"></i>Categories</a>
 
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle @(IsCurrentPageController("Authentication") ? "active" : "")" data-bs-toggle="dropdown"><i class="fa fa-user me-2"></i>Manage Users</a>
@@ -110,19 +101,9 @@
                             </div>
                         </div>
 
-                        <div class="nav-item dropdown">
-                            <a href="#" class="nav-link dropdown-toggle @(IsCurrentPageController("Product") ? "active" : "")" data-bs-toggle="dropdown"><i class="fa fa-tshirt me-2"></i>Manage Products</a>
-                            <div class="dropdown-menu bg-transparent border-0">
-                                <a asp-controller="Product" asp-action="Index" class="dropdown-item">All Products</a>
-                                @if(categoryList != null)
-                                {
-                                    @foreach(var category in categoryList)
-                                    {
-                                        <a class="dropdown-item" href="Product/GetProductByCategory/@category.CategoryId">@category.CategoryName</a>
-                                    }
-                                }
-                            </div>
-                        </div>
+                        <a asp-area="" asp-controller="Product" asp-action="Index" class="nav-item nav-link @(IsCurrentPageController("Product") ? "active" : "")"><i class="fa fa-tshirt me-2"></i>Manage Products</a>
+
+                        
                     </div>
                 </nav>
             </div>     

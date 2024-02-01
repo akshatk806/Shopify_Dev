@@ -18,10 +18,6 @@ namespace Product_Management.Controllers
 
         public IActionResult Index()
         {
-            var categoryList = _context.Categories.ToList();
-
-            //pass category list to view
-            ViewBag.CategoryList = categoryList;
             return View();
         }
 

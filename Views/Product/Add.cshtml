@@ -9,7 +9,7 @@
         <div class="col-sm-12 col-xl-6">
             <div class="bg-light rounded h-100 p-4">
                 <h4 class="mb-4">ADD PRODUCT</h4>
-                <form method="post" asp-action="Add" asp-controller="Product">
+                <form method="post" asp-action="Add" asp-controller="Product" enctype="multipart/form-data">
                     <div class="form-floating mb-3">
                         <input asp-for="ProductName" type="text" class="form-control" id="floatingInput"
                                placeholder="Product Name">
@@ -25,6 +25,11 @@
                         <input asp-for="ProductPrice" type="text" class="form-control" id="floatingInput"
                                placeholder="Product Price">
                         <label asp-for="ProductPrice">Product Price (in Rs.)</label>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label"></label>
+                        <input class="form-control" type="file" id="ImagePath" asp-for="ImagePath">
                     </div>
 
                     <div class="form-floating mb-3">

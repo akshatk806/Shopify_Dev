@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Product_Management.Data;
@@ -12,9 +13,12 @@ namespace Product_Management.Controllers
     public class ProductController : Controller
     {
         private readonly ApplicationDbContext context;
-        public ProductController(ApplicationDbContext context)
+        private readonly IWebHostEnvironment webHostEnvironment;
+
+        public ProductController(ApplicationDbContext context, IWebHostEnvironment webHostEnvironment)
         {
             this.context = context;
+            this.webHostEnvironment = webHostEnvironment;
         }
         [HttpGet("/AllProducts")]
         public async Task<IActionResult> Index()
@@ -82,6 +86,14 @@ namespace Product_Management.Controllers
         [HttpPost("/AddProduct")]
         public async Task<IActionResult> Add(AddProductRequestDTO request)
         {
+            string uniqueFileName = "";
+            if (request.ImagePath != null)
+            {
+                string uploadFoler = Path.Combine(webHostEnvironment.WebRootPath, "ProductImage");
+                uniqueFileName = Guid.NewGuid().ToString() + "_" + request.ImagePath.FileName;
+                string filePath = Path.Combine(uploadFoler, uniqueFileName);
+                request.ImagePath.CopyTo(new FileStream(filePath, FileMode.Create));
+            }
             var newProduct = new Product()
             {
                 ProductId = Guid.NewGuid(),
@@ -92,7 +104,8 @@ namespace Product_Management.Controllers
                 IsActive = request.IsActive,
                 IsTrending = request.IsTrending,
                 CategoryId = request.CategoryId,
-                Category = request.Category
+                Category = request.Category,
+                ProductImageURL = uniqueFileName,
             };
 
             await context.Products.AddAsync(newProduct);

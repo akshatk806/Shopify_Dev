@@ -26,6 +26,8 @@ namespace Product_Management.Models.DomainModels
 
         public bool IsTrending { get; set; } = false;
 
+        public string ProductImageURL { get; set; }
+
         public int CategoryId { get; set; }
 
         // navigation property

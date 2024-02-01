@@ -26,6 +26,8 @@ namespace Product_Management.Models.DTO
 
         public int CategoryId { get; set; }
 
+        public IFormFile ImagePath { get; set; }
+
         // navigation property
         [ForeignKey("CategoryId")]
         public Category Category { get; set; }

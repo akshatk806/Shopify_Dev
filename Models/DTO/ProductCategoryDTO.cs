@@ -17,5 +17,10 @@ namespace Product_Management.Models.DTO
         public int ProductPrice { get; set; }
 
         public DateTime ProductCreatedAt { get; set; }
+
+        [DefaultValue(true)]
+        public bool IsActive { get; set; } = true;
+
+        public bool IsTrending { get; set; } = false;
     }
 }

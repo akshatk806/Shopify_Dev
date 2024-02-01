@@ -21,6 +21,14 @@ builder.Services.AddIdentity<UserModel, IdentityRole>()
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<AuthDbContext>().AddDefaultTokenProviders();
 
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30); // Adjust the timeout as needed
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -44,6 +52,8 @@ app.UseStaticFiles(new StaticFileOptions()
 app.UseRouting();
 
 app.UseAuthorization();
+
+app.UseSession();
 
 app.MapControllerRoute(
     name: "default",

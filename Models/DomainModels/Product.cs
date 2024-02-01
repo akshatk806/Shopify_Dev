@@ -21,6 +21,11 @@ namespace Product_Management.Models.DomainModels
 
         public DateTime ProductCreatedAt { get; set; }
 
+        [DefaultValue(true)]
+        public bool IsActive { get; set; } = true;
+
+        public bool IsTrending { get; set; } = false;
+
         public int CategoryId { get; set; }
 
         // navigation property

@@ -12,6 +12,8 @@ $(document).ready(function () {
     $('#FilterByCategory').on('change', function () {
         var selectedCategory = $(this).val();
 
+        sessionStorage.setItem('selectedCategory', selectedCategory);
+
         // Loop through each row in the table body
         $('#myTable tbody tr').each(function () {
             var categoryInRow = $(this).find('td:eq(3)').text(); // Assuming "Category" is at index 3

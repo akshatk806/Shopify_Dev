@@ -40,7 +40,9 @@ namespace Product_Management.Controllers
                                 ProductPrice = product.ProductPrice,
                                 ProductCreatedAt = product.ProductCreatedAt,
                                 CategoryId = category.CategoryId,
-                                CategoryName = category.CategoryName
+                                CategoryName = category.CategoryName,
+                                IsActive = product.IsActive,
+                                IsTrending = product.IsTrending
                             }
                 ).OrderByDescending(x => x.ProductCreatedAt).ToList();
 
@@ -71,6 +73,9 @@ namespace Product_Management.Controllers
 
             //pass category list to view
             ViewBag.CategoryList = categoryList;
+
+            var selectedCategory = HttpContext.Session.GetString("selectedCategory");
+
             return View();
         }
 
@@ -84,6 +89,8 @@ namespace Product_Management.Controllers
                 ProductDesc = request.ProductDesc,
                 ProductPrice = request.ProductPrice,
                 ProductCreatedAt = DateTime.Now,
+                IsActive = request.IsActive,
+                IsTrending = request.IsTrending,
                 CategoryId = request.CategoryId,
                 Category = request.Category
             };
@@ -124,7 +131,9 @@ namespace Product_Management.Controllers
                 ProductDesc = product.ProductDesc,
                 ProductPrice = product.ProductPrice,
                 CategoryId = product.CategoryId,
-                Category = product.Category
+                Category = product.Category,
+                IsTrending= product.IsTrending,
+                IsActive = product.IsActive,
             };
             ViewBag.CategoryList = await context.Categories.ToListAsync();
 
@@ -149,10 +158,40 @@ namespace Product_Management.Controllers
             existingProduct.ProductPrice = request.ProductPrice;
             existingProduct.CategoryId = request.CategoryId;
             existingProduct.Category = request.Category;
+            existingProduct.IsTrending = request.IsTrending;
+            existingProduct.IsActive = request.IsActive;
 
             await context.SaveChangesAsync();
             TempData["productsuccess"] = "Product Updated Successfully";
 
+            return RedirectToAction("Index", "Product");
+        }
+
+
+        [HttpGet("/Active/{id}")]
+        public async Task<IActionResult> Active(Guid id)
+        {
+            var product = context.Products.FirstOrDefault(x => x.ProductId == id);
+
+            if (product == null)
+            {
+                return NotFound();
+            }
+            product.IsActive = true;
+            await context.SaveChangesAsync();
+            return RedirectToAction("Index", "Product");
+        }
+
+        [HttpGet("/Deactive/{id}")]
+        public async Task<IActionResult> Deactive(Guid id)
+        {
+            var product = context.Products.FirstOrDefault(x => x.ProductId == id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+            product.IsActive = false;
+            await context.SaveChangesAsync();
             return RedirectToAction("Index", "Product");
         }
     }

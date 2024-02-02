@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Product_Management.Constants;
+using Product_Management.Data;
 using Product_Management.Models.DomainModels;
 using Product_Management.Models.DTO;
 
@@ -11,11 +13,13 @@ namespace Product_Management.Controllers
     {
         private readonly SignInManager<UserModel> signInManager;
         private readonly UserManager<UserModel> userManager;
+        private readonly AuthDbContext context;
 
-        public AuthenticationController(SignInManager<UserModel> signInManager, UserManager<UserModel> userManager)
+        public AuthenticationController(SignInManager<UserModel> signInManager, UserManager<UserModel> userManager, AuthDbContext context)
         {
             this.signInManager = signInManager;
             this.userManager = userManager;
+            this.context = context;
         }
 
         // Login
@@ -36,6 +40,12 @@ namespace Product_Management.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginRequestDTO request)
         {
+            var user = await userManager.Users.FirstOrDefaultAsync(x => x.Email == request.Email);
+            if (user.IsActive == false && user.Email.Contains("admin") == false)
+            {
+                TempData["deactiveLogin"] = "Your account has been deactivated by the admin!";
+                return RedirectToAction("Login", "Authentication");
+            }
             if (ModelState.IsValid)
             {
                 //login

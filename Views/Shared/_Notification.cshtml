@@ -27,6 +27,13 @@
         toastr.success('@TempData["usersuccess"]')
     </script>
 }
+@if (TempData["deactiveLogin"] != null) {
+    <script src="~/lib/jquery//dist/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script type="text/javascript">
+        toastr.error('@TempData["deactiveLogin"]')
+    </script>
+}
 @if(TempData["error"] != null)
 {
     

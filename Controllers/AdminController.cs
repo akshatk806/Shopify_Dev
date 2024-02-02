@@ -1,11 +1,14 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Product_Management.Data;
+using Product_Management.Migrations.ApplicationDb;
 using Product_Management.Models.DomainModels;
 using Product_Management.Models.DTO;
 
 namespace CustomIdentity.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
         private readonly SignInManager<UserModel> signInManager;
@@ -60,6 +63,31 @@ namespace CustomIdentity.Controllers
 
             context.SaveChanges();
             TempData["usersuccess"] = "User Updated Successfully";
+            return RedirectToAction("GetAllUsers", "Admin");
+        }
+
+        [HttpGet]
+        public IActionResult DeactiveUser(string id)
+        {
+            var user = userManager.Users.FirstOrDefault(x => x.Id == id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            user.IsActive = false;
+            context.SaveChanges();
+            return RedirectToAction("GetAllUsers", "Admin");
+        } 
+        [HttpGet]
+        public IActionResult ActivateUser(string id)
+        {
+            var user = userManager.Users.FirstOrDefault(x => x.Id == id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            user.IsActive = true;
+            context.SaveChanges();
             return RedirectToAction("GetAllUsers", "Admin");
         }
     }

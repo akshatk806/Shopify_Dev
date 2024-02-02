@@ -12,7 +12,7 @@ $(document).ready(function () {
     $('#FilterByCategory').on('change', function () {
         var selectedCategory = $(this).val();
 
-        sessionStorage.setItem('selectedCategory', selectedCategory);
+        var myval = sessionStorage.setItem('selectedCategory', selectedCategory);
 
         // Loop through each row in the table body
         $('#myTable tbody tr').each(function () {

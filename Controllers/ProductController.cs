@@ -56,17 +56,6 @@ namespace Product_Management.Controllers
             //return PartialView("_ProductList", finalProduct);
         }
 
-        [HttpGet("GetProductByCategory/{categoryId}")]
-        public async Task<IActionResult> GetProductByCategory(int categoryId)
-        {
-            var SelectedProductList = await context.Products.Include(x => x.Category).Where(x => x.CategoryId == categoryId).ToListAsync();
-            if (SelectedProductList.Count == 0)
-            {
-                return BadRequest("No Result");
-            }
-            ViewBag.SelectedProductListByCategory = SelectedProductList;
-            return View(SelectedProductList);
-        }
 
         // Add
         [HttpGet("/AddProduct")]
@@ -78,7 +67,7 @@ namespace Product_Management.Controllers
             //pass category list to view
             ViewBag.CategoryList = categoryList;
 
-            var selectedCategory = HttpContext.Session.GetString("selectedCategory");
+            var selectedCategory = HttpContext.Request.Query["selectedCategory"].ToString();
 
             return View();
         }

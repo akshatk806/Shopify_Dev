@@ -1,12 +1,66 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Product_Management.Data;
+using Product_Management.Models.DomainModels;
+using Product_Management.Models.DTO;
 
 namespace CustomIdentity.Controllers
 {
     public class AdminController : Controller
     {
+        private readonly SignInManager<UserModel> signInManager;
+        private readonly UserManager<UserModel> userManager;
+        private readonly AuthDbContext context;
+
+        public AdminController(SignInManager<UserModel> signInManager, UserManager<UserModel> userManager, AuthDbContext context)
+        {
+            this.signInManager = signInManager;
+            this.userManager = userManager;
+            this.context = context;
+        }
         public IActionResult Index()
         {
             return View();
+        }
+
+        [HttpGet]
+        public IActionResult GetAllUsers()
+        {
+            var allUsers = userManager.Users.Where(x => !x.Email.Contains("admin")).ToList();
+
+            return View(allUsers);
+        }
+
+        [HttpGet("/id")]
+        public IActionResult UpdateUser(string id)
+        {
+            var user = userManager.Users.FirstOrDefault(x => x.Id == id);
+
+            return View(user);
+        }
+
+        [HttpPost("/id")] 
+        public IActionResult UpdateUser(UserModel request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(request);
+            }
+            var existingUser = userManager.Users.FirstOrDefault(x => x.Id == request.Id);
+            if (existingUser == null)
+            {
+                return NotFound();
+            }
+
+            existingUser.Email = request.Email;
+            existingUser.Password = request.Password;
+            existingUser.Name = request.Name;
+            existingUser.Address = request.Address; 
+            existingUser.Phone = request.Phone;
+
+            context.SaveChanges();
+            TempData["usersuccess"] = "User Updated Successfully";
+            return RedirectToAction("GetAllUsers", "Admin");
         }
     }
 }

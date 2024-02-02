@@ -19,5 +19,6 @@ namespace Product_Management.Models.DTO
         public string Password { get; set; }
         [Compare("Password", ErrorMessage = "Passwords don't match")]
         public string ConfirmPassword { get; set; }
+        public bool IsActive { get; set; } = true;
     }
 }

@@ -1,0 +1,54 @@
+﻿@model Product_Management.Models.DomainModels.UserModel;
+<partial name="_Notification" />
+<div class="container-fluid px-4 mb-5">
+    <div class="row g-4">
+        <div class="col-sm-12 col-xl-6">
+            <div class="bg-light rounded h-100 p-4">
+                <h4 class="mb-4">UPDATE PRODUCT</h4>
+                <form method="post" asp-action="UpdateUser">
+                    <input type="hidden" asp-for="@Model.Id" />
+                    <div class="form-floating mb-3">
+                        <input asp-for="Email" type="email" class="form-control" id="floatingInput"
+                               placeholder="User Name">
+                        <label asp-for="Email">User Email</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="Name" type="text" class="form-control" id="floatingInput"
+                               placeholder="User Name">
+                        <label asp-for="Name">User Name</label>
+                    </div>
+                    
+                    <div class="form-floating mb-3">
+                        <input asp-for="Password" type="text" class="form-control" id="floatingInput"
+                               placeholder="User Password">
+                        <label asp-for="Password">User Password</label>
+                    </div>
+                    
+                    <div class="form-floating mb-3">
+                        <input asp-for="Phone" type="text" class="form-control" id="floatingInput"
+                               placeholder="User Phone">
+                        <label asp-for="Phone">User Phone</label>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input asp-for="Address" type="text" class="form-control" id="floatingInput"
+                               placeholder="User Address">
+                        <label asp-for="Address">User Address</label>
+                    </div>
+
+                    
+                    <div>
+                        <button class="btn btn-warning btn-sm" type="submit">
+                            <i class="bi bi-pencil-square"></i>
+                            Update
+                        </button>
+                        <a asp-controller="Product" asp-action="Index" class="btn btn-danger btn-sm float-end" type="submit">
+                            <i class="bi bi-arrow-left"></i>
+                            Back to Dashboard
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

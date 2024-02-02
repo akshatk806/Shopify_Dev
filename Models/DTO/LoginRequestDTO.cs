@@ -14,5 +14,7 @@ namespace Product_Management.Models.DTO
 
         [Display(Name = "Remember Me?")]
         public bool RememberMe { get; set; }    
+
+        public bool IsActive { get; set; } = true;
     }
 }

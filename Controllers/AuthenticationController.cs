@@ -88,7 +88,9 @@ namespace Product_Management.Controllers
                     Name = request.Name,
                     Email = request.Email,
                     Address = request.Address,
-                    Phone = request.Phone
+                    Phone = request.Phone,
+                    Password = request.Password,
+                    IsActive = request.IsActive
                 };
                 var result = await userManager.CreateAsync(user, request.Password);
                 if (result.Succeeded)

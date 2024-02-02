@@ -93,14 +93,7 @@
                     <div class="navbar-nav w-100">
                         <a asp-area="" asp-controller="Admin" asp-action="Index" class="nav-item nav-link @(IsCurrentPage("Admin", "Index") ? "active" : "")"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
                         <a asp-area="" asp-controller="Category" asp-action="Index" class="nav-item nav-link @(IsCurrentPageController("Category") ? "active" : "")"><i class="fa fa-cog me-2"></i>Categories</a>
-
-                        <div class="nav-item dropdown">
-                            <a href="#" class="nav-link dropdown-toggle @(IsCurrentPageController("Authentication") ? "active" : "")" data-bs-toggle="dropdown"><i class="fa fa-user me-2"></i>Manage Users</a>
-                            <div class="dropdown-menu bg-transparent border-0">
-                                <a asp-controller="Authentication" asp-action="Register" class="dropdown-item">Add Users</a>
-                                <a asp-controller="Admin" asp-action="GetAllUsers" class="dropdown-item">Show Users</a>
-                            </div>
-                        </div>
+                        <a asp-area="" asp-controller="Admin" asp-action="GetAllUsers" class="nav-item nav-link @(IsCurrentPage("Admin", "GetAllUsers") ? "active" : "")"><i class="fa fa-user me-2"></i>Manage Users</a>
 
                         <a asp-area="" asp-controller="Product" asp-action="Index" class="nav-item nav-link @(IsCurrentPageController("Product") ? "active" : "")"><i class="fa fa-tshirt me-2"></i>Manage Products</a>
 

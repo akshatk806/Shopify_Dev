@@ -2,6 +2,7 @@
 @{
     ViewData["Title"] = "Add Product";
     var categoryList = ViewBag.CategoryList as List<Product_Management.Models.DomainModels.Category>;
+    var CategoryId = TempData["CategoryId"];
 }
 
 <div class="container-fluid px-4 mb-5">
@@ -42,7 +43,14 @@
                             {
                                 @foreach (var x in categoryList)
                                 {
-                                    <option value="@x.CategoryId">@x.CategoryName</option>
+                                    @if (x.CategoryId == Convert.ToInt32(CategoryId))
+                                    {
+                                        <option value="@x.CategoryId" selected>@x.CategoryName</option>
+                                    }   
+                                    else
+                                    {
+                                        <option value="@x.CategoryId">@x.CategoryName</option>
+                                    }
                                 }
                             }
                         </select>

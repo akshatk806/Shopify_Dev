@@ -11,8 +11,9 @@ $(document).ready(function () {
 
     $('#FilterByCategory').on('change', function () {
         var selectedCategory = $(this).val();
+        //sessionStorage.setItem('TheCategory', selectedCategory);
+        console.log(selectedCategory);
 
-        var myval = sessionStorage.setItem('selectedCategory', selectedCategory);
 
         // Loop through each row in the table body
         $('#myTable tbody tr').each(function () {
@@ -21,6 +22,18 @@ $(document).ready(function () {
                 $(this).show();
             } else {
                 $(this).hide();
+            }
+        });
+        $.ajax({
+            url: '/Home/Privacy',
+            type: 'POST',
+            data: { myData: selectedCategory },
+            success: function (data) {
+                sessionStorage.setItem('TheCategory', selectedCategory)
+                console.log(data.success)
+            },
+            error: function () {
+                alert("error");
             }
         });
     });

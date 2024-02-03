@@ -27,8 +27,9 @@ namespace Product_Management.Models.DTO
 
         public bool IsTrending { get; set; } = false;
 
-        //public string ProductImageURL { get; set; }
-        //public IFormFile ImagePath { get; set; }
+        [ValidateNever]
+        public string ProductImageURL { get; set; }
+        public IFormFile ImagePath { get; set; }
 
         [ValidateNever]
         public Category Category { get; set; }

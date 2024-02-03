@@ -14,15 +14,19 @@ namespace CustomIdentity.Controllers
         private readonly SignInManager<UserModel> signInManager;
         private readonly UserManager<UserModel> userManager;
         private readonly AuthDbContext context;
+        private readonly ApplicationDbContext dbContext;
 
-        public AdminController(SignInManager<UserModel> signInManager, UserManager<UserModel> userManager, AuthDbContext context)
+        public AdminController(SignInManager<UserModel> signInManager, UserManager<UserModel> userManager, AuthDbContext context, ApplicationDbContext dbContext)
         {
             this.signInManager = signInManager;
             this.userManager = userManager;
             this.context = context;
+            this.dbContext = dbContext;
         }
         public IActionResult Index()
         {
+            ViewBag.totalUsers = context.Users.Where(x => !x.Email.Contains("Admin")).Count();
+            ViewBag.totalProducts = dbContext.Products.Count();
             return View();
         }
 

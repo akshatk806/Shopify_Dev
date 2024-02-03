@@ -164,6 +164,14 @@ namespace Product_Management.Controllers
             existingProduct.IsTrending = request.IsTrending;
             existingProduct.IsActive = request.IsActive;
 
+
+            if (request.ImagePath == null)
+            {
+                await context.SaveChangesAsync();
+                TempData["productsuccess"] = "Product Updated Successfully";
+                return RedirectToAction("Index", "Product");
+            }
+
             string uniqueFileName = "";
             if (request.ImagePath != null)
             {
@@ -172,7 +180,11 @@ namespace Product_Management.Controllers
                     string filepath = Path.Combine(webHostEnvironment.WebRootPath, "ProductImage",existingProduct.ProductImageURL);
                     if(System.IO.File.Exists(filepath))
                     {
-                        System.IO.File.Delete(filepath);    
+                        using (var fileStream = new FileStream(filepath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                        {
+                            
+                        }
+                        System.IO.File.Delete(filepath);
                     }
                 }
                 string uploadFoler = Path.Combine(webHostEnvironment.WebRootPath, "ProductImage");

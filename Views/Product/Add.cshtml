@@ -43,10 +43,14 @@
                             {
                                 @foreach (var x in categoryList)
                                 {
-                                    @if (x.CategoryId == Convert.ToInt32(CategoryId))
+                                    @if (x.CategoryId == Convert.ToInt32(CategoryId) && x.CategoryId != 6)
                                     {
                                         <option value="@x.CategoryId" selected>@x.CategoryName</option>
                                     }   
+                                    else if(x.CategoryId == 6)
+                                    {
+                                        <option value="@x.CategoryId">@x.CategoryName</option>
+                                    }
                                     else
                                     {
                                         <option value="@x.CategoryId">@x.CategoryName</option>

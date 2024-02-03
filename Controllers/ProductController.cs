@@ -62,7 +62,7 @@ namespace Product_Management.Controllers
         public async Task<IActionResult> Add()
         {
             // projection for dropdown
-            var categoryList = await context.Categories.ToListAsync();
+            var categoryList = await context.Categories.Where(x => x.CategoryId != 6).ToListAsync();
 
             //pass category list to view
             ViewBag.CategoryList = categoryList;
@@ -137,7 +137,7 @@ namespace Product_Management.Controllers
                 IsTrending= product.IsTrending,
                 IsActive = product.IsActive,
             };
-            ViewBag.CategoryList = await context.Categories.ToListAsync();
+            ViewBag.CategoryList = await context.Categories.Where(x => x.CategoryId != 6).ToListAsync();
 
             return View(productList);
         }

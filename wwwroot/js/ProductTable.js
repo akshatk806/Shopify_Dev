@@ -11,19 +11,27 @@ $(document).ready(function () {
 
     $('#FilterByCategory').on('change', function () {
         var selectedCategory = $(this).val();
-        //sessionStorage.setItem('TheCategory', selectedCategory);
-        console.log(selectedCategory);
+        if (selectedCategory == "All") {
+            $('#myTable tbody tr').each(function () {
+                $(this).show();
+            });
 
+        }
+        //sessionStorage.setItem('TheCategory', selectedCategory);
+        //console.log(selectedCategory);
+        else {
+            $('#myTable tbody tr').each(function () {
+                var categoryInRow = $(this).find('td:eq(3)').text(); // Assuming "Category" is at index 3
+                if (selectedCategory === '' || categoryInRow === selectedCategory) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+        }
 
         // Loop through each row in the table body
-        $('#myTable tbody tr').each(function () {
-            var categoryInRow = $(this).find('td:eq(3)').text(); // Assuming "Category" is at index 3
-            if (selectedCategory === '' || categoryInRow === selectedCategory) {
-                $(this).show();
-            } else {
-                $(this).hide();
-            }
-        });
+        
         $.ajax({
             url: '/Home/Privacy',
             type: 'POST',

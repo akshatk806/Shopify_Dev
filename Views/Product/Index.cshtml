@@ -27,10 +27,13 @@
                 else
                 {
                     <div class="float-end">
-                        <select class="form-control m-2" id="FilterByCategory">
-                            <option value="">All</option>
+                        <select class="form-select form-select-sm mb-3" aria-label=".form-select-sm example" id="FilterByCategory">
+                            <option value="@categoryList.Find(x => x.CategoryId == 6).CategoryName">All</option>
                             @foreach (var category in categoryList)
                             {
+                                if (category.CategoryId == 6)
+                                    continue;
+
                                 <option value="@category.CategoryName">@category.CategoryName</option>
                             }
                         </select>

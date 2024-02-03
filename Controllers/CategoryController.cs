@@ -18,7 +18,7 @@ namespace Product_Management.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var categoryList = await context.Categories.ToListAsync();
+            var categoryList = await context.Categories.Where(x => x.CategoryId != 6).ToListAsync();
             return View(categoryList);
         }
 

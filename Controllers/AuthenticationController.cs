@@ -106,6 +106,11 @@ namespace Product_Management.Controllers
                 if (result.Succeeded)
                 {
                     await userManager.AddToRoleAsync(user, Roles.User.ToString());
+                    if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                    {
+                        TempData["usersuccess"] = "User Added Successfully";
+                        return RedirectToAction("GetAllUsers", "Admin");
+                    }
                     await signInManager.SignInAsync(user, false);
                     return RedirectToAction("Index", "Home");
                 }

@@ -29,7 +29,7 @@ namespace CustomIdentity.Controllers
         [HttpGet]
         public IActionResult GetAllUsers()
         {
-            var allUsers = userManager.Users.Where(x => !x.Email.Contains("admin")).ToList();
+            var allUsers = userManager.Users.Where(x => !x.Email.Contains("admin")).OrderByDescending(x => x.UserAddedAt).ToList();
 
             return View(allUsers);
         }

@@ -12,5 +12,6 @@ namespace Product_Management.Models.DomainModels
         [DataType(DataType.Password)]
         public string Password { get; set; }
         public bool IsActive { get; set; } = true;
+        public DateTime UserAddedAt { get; set; } = DateTime.Now;
     }
 }

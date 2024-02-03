@@ -11,6 +11,34 @@
             <div class="bg-light rounded h-100 p-4">
                 <h4 class="mb-4">ADD PRODUCT</h4>
                 <form method="post" asp-action="Add" asp-controller="Product" enctype="multipart/form-data">
+
+
+                    <div class="form-floating mb-3">
+                        <select asp-for="CategoryId" class="form-select form-select-sm mb-3" aria-label="Default select example" placeholder="Select Category">
+                            <option disabled selected>--Select Category--</option>
+                            @if (categoryList != null)
+                            {
+                                @foreach (var x in categoryList)
+                                {
+                                    @if (x.CategoryId == Convert.ToInt32(CategoryId) && x.CategoryId != 6)
+                                    {
+                                        <option value="@x.CategoryId" selected>@x.CategoryName</option>
+                                    }
+                                    else if (x.CategoryId == 6)
+                                    {
+                                        <option value="@x.CategoryId">@x.CategoryName</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@x.CategoryId">@x.CategoryName</option>
+                                    }
+                                }
+                            }
+                        </select>
+                        <label>Select Category</label>
+                        <span asp-validation-for="CategoryId" class="text-danger"></span>
+                    </div>
+
                     <div class="form-floating mb-3">
                         <input asp-for="ProductName" type="text" class="form-control" id="floatingInput"
                                placeholder="Product Name">
@@ -36,31 +64,7 @@
                         </div>
                     </div>
 
-                    <div class="form-floating mb-3">
-                        <select asp-for="CategoryId" class="form-select form-select-sm mb-3" aria-label="Default select example" placeholder="Select Category">
-                            <option disabled selected>--Select Category--</option>
-                            @if (categoryList != null)
-                            {
-                                @foreach (var x in categoryList)
-                                {
-                                    @if (x.CategoryId == Convert.ToInt32(CategoryId) && x.CategoryId != 6)
-                                    {
-                                        <option value="@x.CategoryId" selected>@x.CategoryName</option>
-                                    }   
-                                    else if(x.CategoryId == 6)
-                                    {
-                                        <option value="@x.CategoryId">@x.CategoryName</option>
-                                    }
-                                    else
-                                    {
-                                        <option value="@x.CategoryId">@x.CategoryName</option>
-                                    }
-                                }
-                            }
-                        </select>
-                        <label>Select Category</label>
-                        <span asp-validation-for="CategoryId" class="text-danger"></span>
-                    </div>
+                  
 
 
 
@@ -70,8 +74,8 @@
                             Add
                         </button>
                         <a asp-controller="Product" asp-action="Index" class="btn btn-danger btn-sm float-end" type="submit">
-                            <i class="bi bi-arrow-left"></i>
-                            Back to List
+                            <i class="bi bi-x-circle"></i>
+                            Cancel
                         </a>
                     </div>
                 </form>

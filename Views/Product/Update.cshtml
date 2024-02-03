@@ -12,6 +12,22 @@
                 <h4 class="mb-4">UPDATE PRODUCT</h4>
                 <form method="post" asp-action="Update" asp-controller="Product" enctype="multipart/form-data">
                     <input type="hidden" asp-for="@Model.ProductId" />
+
+                    <div class="form-floating mb-3">
+                        <select asp-for="CategoryId" class="form-select form-select-sm mb-3" aria-label="Default select example" placeholder="Select Category">
+                            <option selected disabled>--Select Category--</option>
+                            @if (categoryList != null)
+                            {
+                                @foreach (var x in categoryList)
+                                {
+                                    <option value="@x.CategoryId">@x.CategoryName</option>
+                                }
+                            }
+                        </select>
+                        <label>Select Category</label>
+                        <span asp-validation-for="CategoryId" class="text-danger"></span>
+                    </div>
+
                     <div class="form-floating mb-3">
                         <input asp-for="ProductName" type="text" class="form-control" id="floatingInput"
                                placeholder="Product Name">
@@ -37,20 +53,7 @@
                         </div>
                     </div>  
 
-                    <div class="form-floating mb-3">
-                        <select asp-for="CategoryId" class="form-select form-select-sm mb-3" aria-label="Default select example" placeholder="Select Category">
-                            <option selected disabled>--Select Category--</option>
-                            @if (categoryList != null)
-                            {
-                                @foreach (var x in categoryList)
-                                {
-                                    <option value="@x.CategoryId">@x.CategoryName</option>
-                                }
-                            }
-                        </select>
-                        <label>Select Category</label>
-                        <span asp-validation-for="CategoryId" class="text-danger"></span>
-                    </div>
+                   
 
                     <div class="form-check mb-3">
                         <input class="form-check-input" type="checkbox" asp-for="IsTrending" id="IsTrending">
@@ -66,8 +69,8 @@
                             Update
                         </button>
                         <a asp-controller="Product" asp-action="Index" class="btn btn-danger btn-sm float-end" type="submit">
-                            <i class="bi bi-arrow-left"></i>
-                            Back to List
+                            <i class="bi bi-x-circle"></i>
+                            Cancel
                         </a>
                     </div>
                 </form>

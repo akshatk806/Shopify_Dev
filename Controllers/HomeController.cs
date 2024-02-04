@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Product_Management.Data;
 using Product_Management.Models;
 using Product_Management.Models.DomainModels;
@@ -19,7 +20,9 @@ namespace Product_Management.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            var allProducts = _context.Products.Include(x => x.Category).ToList();
+            ViewBag.trendingProducts = allProducts.Where(x => x.IsTrending == true).ToList();
+            return View(allProducts);
         }
 
         [HttpPost]

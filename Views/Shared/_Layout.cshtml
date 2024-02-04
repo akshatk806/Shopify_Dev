@@ -132,6 +132,15 @@
                             <span class="d-none d-lg-inline-flex">Home</span>
                         </a>
                     </div>
+                    @if(!User.IsInRole("Admin"))
+                    {
+                        <div class="nav-item dropdown">
+                            <a asp-action="Index" asp-controller="Home" class="nav-link">
+                                <i class="fas fa-shopping-cart me-lg-2"></i>
+                                <span class="d-none d-lg-inline-flex">Cart</span>
+                            </a>
+                        </div>
+                    }
                     @if(signInManager.IsSignedIn(User))
                     {
                         <div class="nav-item dropdown">

@@ -80,7 +80,7 @@
     }
 
     .product-single-card .product-top-area:hover .product-img .hover-view {
-        opacity: 100%;
+        opacity: 30%;
         scale: 1.2;
     }
 
@@ -187,18 +187,21 @@
                                         <div class="first-view">
                                             <img src="/ProductImage/@product.ProductImageURL" alt="logo" class="img-fluid">
                                         </div>
-                                        <div class="hover-view">
-                                            <img src="/ProductImage/@product.ProductImageURL">
+                                        <div class="@(User.IsInRole("Admin") ? "" : "hover-view")">
+                                            <img src="/ProductImage/@product.ProductImageURL" alt="logo" class="img-fluid">
                                         </div>
                                     </div>
-                                    <div class="sideicons">
-                                        <button class="sideicons-btn">
-                                            <i class="bi bi-cart-plus-fill" style="font-size:1.8rem;"></i>
-                                        </button>
-                                        <button class="sideicons-btn">
-                                            <i class="bi bi-heart" style="font-size:1.25rem;"></i>
-                                        </button>
-                                    </div>
+                                    @if(!User.IsInRole("Admin"))
+                                    {
+                                        <div class="sideicons">
+                                            <button class="sideicons-btn">
+                                                <i class="bi bi-cart-plus-fill" style="font-size:1.8rem;"></i>
+                                            </button>
+                                            <button class="sideicons-btn">
+                                                <i class="bi bi-heart" style="font-size:1.25rem;"></i>
+                                            </button>
+                                        </div>
+                                    }
                                 </div>
                                 <div class="product-info">
                                     <h6 class="product-category">@product.Category.CategoryName</h6>
@@ -245,18 +248,21 @@
                                     <div class="first-view">
                                         <img src="/ProductImage/@product.ProductImageURL" alt="logo" class="img-fluid">
                                     </div>
-                                    <div class="hover-view">
-                                        <img src="/ProductImage/@product.ProductImageURL">
+                                    <div class="@(User.IsInRole("Admin") ? "" : "hover-view")">
+                                        <img src="/ProductImage/@product.ProductImageURL" alt="logo" class="img-fluid">
                                     </div>
                                 </div>
-                                <div class="sideicons">
-                                    <button class="sideicons-btn">
-                                        <i class="bi bi-cart-plus-fill" style="font-size:1.8rem;"></i>
-                                    </button>
-                                    <button class="sideicons-btn">
-                                        <i class="bi bi-heart" style="font-size:1.25rem;"></i>
-                                    </button>
-                                </div>
+                                @if (!User.IsInRole("Admin"))
+                                {
+                                    <div class="sideicons">
+                                        <button class="sideicons-btn">
+                                            <i class="bi bi-cart-plus-fill" style="font-size:1.8rem;"></i>
+                                        </button>
+                                        <button class="sideicons-btn">
+                                            <i class="bi bi-heart" style="font-size:1.25rem;"></i>
+                                        </button>
+                                    </div>
+                                }
                             </div>
                             <div class="product-info">
                                 <h6 class="product-category">@product.Category.CategoryName</h6>

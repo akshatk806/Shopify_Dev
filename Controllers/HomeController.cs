@@ -20,8 +20,8 @@ namespace Product_Management.Controllers
 
         public IActionResult Index()
         {
-            var allProducts = _context.Products.Include(x => x.Category).ToList();
-            ViewBag.trendingProducts = allProducts.Where(x => x.IsTrending == true).ToList();
+            var allProducts = _context.Products.Include(x => x.Category).OrderByDescending(x => x.ProductCreatedAt).ToList();
+            ViewBag.trendingProducts = allProducts.Where(x => x.IsTrending == true).OrderByDescending(x => x.ProductCreatedAt).ToList();
             return View(allProducts);
         }
 

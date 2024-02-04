@@ -1,0 +1,52 @@
+﻿@model List<Product_Management.Models.DomainModels.Product>
+
+<div class="container mb-5">
+    <div class="row g-5 py-3">
+        @foreach (var product in Model)
+        {
+            <div class="col-md-3">
+                <div class="product-single-card">
+                    <div class="product-top-area">
+                        <div class="product-discount">
+                            &#8377;@product.ProductPrice
+                        </div>
+
+                        <div class="product-img">
+                            <div class="first-view">
+                                <img src="/ProductImage/@product.ProductImageURL" alt="logo" class="img-fluid">
+                            </div>
+                            <div class="@(User.IsInRole("Admin") ? "" : "hover-view")">
+                                <img src="/ProductImage/@product.ProductImageURL" alt="logo" class="img-fluid">
+                            </div>
+                        </div>
+                        @if (!User.IsInRole("Admin"))
+                        {
+                            <div class="sideicons">
+                                <button class="sideicons-btn">
+                                    <i class="bi bi-cart-plus-fill" style="font-size:1.8rem;"></i>
+                                </button>
+                                <button class="sideicons-btn">
+                                    <i class="bi bi-heart" style="font-size:1.25rem;"></i>
+                                </button>
+                            </div>
+                        }
+                    </div>
+                    <div class="product-info">
+                        <h6 class="product-category">@product.Category.CategoryName</h6>
+                        <h6 class="product-title">@product.ProductName</h6>
+
+                        <div class="d-flex flex-wrap align-items-center py-2">
+                            <div class="old-price">
+                                &#8377;@(product.ProductPrice * 2)
+                            </div>
+                            <div class="new-price">
+                                &#8377;@product.ProductPrice
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

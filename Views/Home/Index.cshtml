@@ -1,6 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
     var trendingProducts = ViewBag.trendingProducts as List<Product_Management.Models.DomainModels.Product>;
+    var CategoryList = ViewBag.CategoryList as List<Product_Management.Models.DomainModels.Category>;
 }
 @model List<Product_Management.Models.DomainModels.Product>
 
@@ -231,8 +232,22 @@
 <div>
     <h1 class="display-7">Our Collections</h1>
 
-    <!-- Trending Product Section - Start -->
-    <section>
+
+    <div class="mb-3">
+        <label for="categoryDropdown" class="form-label">Select Category:</label>
+        <select id="categoryDropdown" class="form-select">
+            <option value="@int.Parse("6")">All Categories</option>
+            @foreach (var category in CategoryList)
+            {
+                if (category.CategoryId == 6)
+                    continue;
+                <option value="@category.CategoryId">@category.CategoryName</option>
+            }
+        </select>
+    </div>
+
+
+    <section id="productListContainer">
         <div class="container mb-5">
             <div class="row g-5 py-3">
                 @foreach (var product in Model)
@@ -282,8 +297,27 @@
                     </div>
                 }
             </div>
-        </div>
     </section>
-    <!-- Trending Product Section - End -->
 </div>
 
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $("#categoryDropdown").change(function () {
+                var categoryId = $(this).val();
+                $.ajax({
+                    url: "/Home/GetProductsByCategory",
+                    method: "GET",
+                    data: { categoryId: categoryId },
+                    success: function (result) {
+                        
+                        $("#productListContainer").html(result);
+                    },
+                    error: function () {
+                        console.error("Error fetching products");
+                    }
+                });
+            });
+        });
+    </script>
+}

@@ -20,9 +20,23 @@ namespace Product_Management.Controllers
 
         public IActionResult Index()
         {
-            var allProducts = _context.Products.Include(x => x.Category).OrderByDescending(x => x.ProductCreatedAt).ToList();
-            ViewBag.trendingProducts = allProducts.Where(x => x.IsTrending == true).OrderByDescending(x => x.ProductCreatedAt).ToList();
+            var allProducts = _context.Products.Include(x => x.Category).Where(x => x.IsActive == true).OrderByDescending(x => x.ProductCreatedAt).ToList();
+            ViewBag.trendingProducts = allProducts.Where(x => x.IsTrending == true).Where(x => x.IsActive == true).OrderByDescending(x => x.ProductCreatedAt).ToList();
+            ViewBag.CategoryList = _context.Categories.ToList();
             return View(allProducts);
+        }
+
+
+        public IActionResult GetProductsByCategory(int categoryId)
+        {
+            if(categoryId == 6)
+            {
+                var allProducts = _context.Products.Include(x => x.Category).Where(x => x.IsActive == true).OrderByDescending(x => x.ProductCreatedAt).ToList();
+                return PartialView("_ProductByCategoryPartial", allProducts);
+            }
+            var productsByCategory = _context.Products.Include(x => x.Category).Where(x => x.CategoryId == categoryId && x.IsActive == true).OrderByDescending(x => x.ProductCreatedAt).ToList();
+
+            return PartialView("_ProductByCategoryPartial", productsByCategory);
         }
 
         [HttpPost]

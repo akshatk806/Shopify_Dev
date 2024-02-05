@@ -47,7 +47,7 @@ namespace CustomIdentity.Controllers
         }
 
         [HttpPost("/id")] 
-        public IActionResult UpdateUser(UserModel request)
+        public async Task<IActionResult> UpdateUser(UserModel request)
         {
             if (!ModelState.IsValid)
             {
@@ -59,11 +59,22 @@ namespace CustomIdentity.Controllers
                 return NotFound();
             }
 
+            var oldPassword = existingUser.Password;
+            var newPassword = request.Password;
+
             existingUser.Email = request.Email;
             existingUser.Password = request.Password;
             existingUser.Name = request.Name;
             existingUser.Address = request.Address; 
             existingUser.Phone = request.Phone;
+
+            var resultPassword = await userManager.ChangePasswordAsync(existingUser, oldPassword, newPassword);
+            if (resultPassword.Succeeded)
+            {
+                existingUser.Password = newPassword;
+
+                await userManager.UpdateAsync(existingUser);
+            }
 
             context.SaveChanges();
             TempData["usersuccess"] = "User Updated Successfully";

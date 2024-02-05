@@ -4,7 +4,7 @@
     <div class="row g-4">
         <div class="col-sm-12 col-xl-6">
             <div class="bg-light rounded h-100 p-4">
-                <h4 class="mb-4">UPDATE PRODUCT</h4>
+                <h4 class="mb-4">UPDATE USER</h4>
                 <form method="post" asp-action="UpdateUser">
                     <input type="hidden" asp-for="@Model.Id" />
                     <div class="form-floating mb-3">
@@ -42,9 +42,9 @@
                             <i class="bi bi-pencil-square"></i>
                             Update
                         </button>
-                        <a asp-controller="Product" asp-action="Index" class="btn btn-danger btn-sm float-end" type="submit">
-                            <i class="bi bi-arrow-left"></i>
-                            Back to Dashboard
+                        <a asp-controller="Admin" asp-action="GetAllUsers" class="btn btn-danger btn-sm float-end" type="submit">
+                            <i class="bi bi-x-circle"></i>
+                            Cancel
                         </a>
                     </div>
                 </form>

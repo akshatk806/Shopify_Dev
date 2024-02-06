@@ -140,6 +140,12 @@
                                 <span class="d-none d-lg-inline-flex">Cart</span>
                             </a>
                         </div>
+                        <div class="nav-item dropdown">
+                            <a asp-action="Index" asp-controller="Fav" class="nav-link">
+                                <i class="fas fa-heart me-lg-2"></i>
+                                <span class="d-none d-lg-inline-flex">Favourites</span>
+                            </a>
+                        </div>
                     }
                     @if(signInManager.IsSignedIn(User))
                     {

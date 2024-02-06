@@ -15,5 +15,7 @@ namespace Product_Management.Data
         public DbSet<Product> Products { get; set; }
 
         public DbSet<CartModel> CartTable { get; set; }
+
+        public DbSet<FavModel> FavTable { get; set; }
     }
 }

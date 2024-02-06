@@ -1,4 +1,6 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Identity
+@using Product_Management.Models.DomainModels
+@{
     ViewData["Title"] = "Home Page";
     var trendingProducts = ViewBag.trendingProducts as List<Product_Management.Models.DomainModels.Product>;
     var CategoryList = ViewBag.CategoryList as List<Product_Management.Models.DomainModels.Category>;
@@ -6,6 +8,7 @@
 
 }
 @model List<Product_Management.Models.DomainModels.Product>
+@inject SignInManager<UserModel> signInManager;
 <partial name="_Notification" />
 <style>
     .user-select-none {
@@ -245,14 +248,28 @@
                                             <img src="/ProductImage/@product.ProductImageURL" alt="logo" class="img-fluid">
                                         </div>
                                     </div>
-                                    @if(!User.IsInRole("Admin"))
+                                    @if(!signInManager.IsSignedIn(User))
+                                    {
+                                        <div class="sideicons">
+                                            <a asp-action="Login" asp-controller="Authentication" class="sideicons-btn tooltip alert">
+                                                <span class="tooltiptext">Add To Cart</span>
+                                                <i class="bi bi-cart-plus-fill" style="font-size:1.8rem;"></i>
+                                            </a>
+                                            <a class="sideicons-btn tooltip alert">
+                                                <span class="tooltiptext bg-danger">Add To Favorite</span>
+                                                <i class="bi bi-heart" style="font-size:1.25rem;"></i>
+                                            </a>
+                                        </div>
+                                    }
+                                    else if(!User.IsInRole("Admin"))
                                     {
                                         <div class="sideicons">
                                             <a asp-action="Add" asp-controller="Cart" asp-route-id="@product.ProductId" class="sideicons-btn tooltip">
                                                 <span class="tooltiptext">Add To Cart</span>
                                                 <i class="bi bi-cart-plus-fill" style="font-size:1.8rem;"></i>
                                             </a>
-                                            <a asp-action="Add" asp-controller="Fav" asp-route-id="@product.ProductId" class="sideicons-btn">
+                                            <a asp-action="Add" asp-controller="Fav" asp-route-id="@product.ProductId" class="sideicons-btn tooltip">
+                                                <span class="tooltiptext bg-danger">Add To Favorite</span>
                                                 <i class="bi bi-heart" style="font-size:1.25rem;"></i>
                                             </a>
                                         </div>
@@ -371,13 +388,28 @@
                                         <img src="/ProductImage/@product.ProductImageURL" alt="logo" class="img-fluid">
                                     </div>
                                 </div>
-                                @if (!User.IsInRole("Admin"))
+                                @if (!signInManager.IsSignedIn(User))
                                 {
                                     <div class="sideicons">
-                                        <a asp-action="Add" asp-controller="Cart" asp-route-id="@product.ProductId" class="sideicons-btn">
+                                        <a asp-action="Login" asp-controller="Authentication" class="sideicons-btn tooltip alert">
+                                            <span class="tooltiptext">Add To Cart</span>
                                             <i class="bi bi-cart-plus-fill" style="font-size:1.8rem;"></i>
                                         </a>
-                                        <a asp-action="Add" asp-controller="Fav" asp-route-id="@product.ProductId" class="sideicons-btn">
+                                        <a class="sideicons-btn tooltip alert">
+                                            <span class="tooltiptext bg-danger">Add To Favorite</span>
+                                            <i class="bi bi-heart" style="font-size:1.25rem;"></i>
+                                        </a>
+                                    </div>
+                                }
+                                else if (!User.IsInRole("Admin"))
+                                {
+                                    <div class="sideicons">
+                                        <a asp-action="Add" asp-controller="Cart" asp-route-id="@product.ProductId" class="sideicons-btn tooltip">
+                                            <span class="tooltiptext">Add To Cart</span>
+                                            <i class="bi bi-cart-plus-fill" style="font-size:1.8rem;"></i>
+                                        </a>
+                                        <a asp-action="Add" asp-controller="Fav" asp-route-id="@product.ProductId" class="sideicons-btn tooltip">
+                                            <span class="tooltiptext bg-danger">Add To Favorite</span>
                                             <i class="bi bi-heart" style="font-size:1.25rem;"></i>
                                         </a>
                                     </div>
@@ -444,5 +476,34 @@
         });
 
         
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.all.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Add click event to the "Deactive" button
+            $('.alert').on('click', function (e) {
+                e.preventDefault();
+
+                // Get the product ID from the button's data-id attribute
+                var productId = $(this).data('id');
+
+                // Show SweetAlert2 confirmation dialog
+                Swal.fire({
+                    title: "Please Login to Proceed",
+                    text: "Are you sure you want to Login??",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, Login!"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Perform the deactivation action
+                        window.location.href = $(this).attr('href');
+                    }
+                });
+            });
+        });
     </script>
 }

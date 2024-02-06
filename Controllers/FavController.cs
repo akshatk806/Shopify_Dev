@@ -57,7 +57,8 @@ namespace Product_Management.Controllers
 
                     if (existingItem != null)
                     {
-                        
+                        TempData["favProduct"] = "This Product is Already added in Favorites";
+                        return RedirectToAction("Index", "Home");
                     }
                     else
                     {

@@ -31,9 +31,9 @@
                                 <a asp-action="Add" asp-controller="Cart" asp-route-id="@product.ProductId" class="sideicons-btn">
                                     <i class="bi bi-cart-plus-fill" style="font-size:1.8rem;"></i>
                                 </a>
-                                <button class="sideicons-btn">
+                                <a asp-action="Add" asp-controller="Fav" asp-route-id="@product.ProductId" class="sideicons-btn">
                                     <i class="bi bi-heart" style="font-size:1.25rem;"></i>
-                                </button>
+                                </a>
                             </div>
                         }
                     </div>

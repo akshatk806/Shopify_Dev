@@ -1,6 +1,21 @@
-﻿@model List<Product_Management.Models.DTO.CartProductDTO>
+﻿@using Microsoft.AspNetCore.Identity
+@using Product_Management.Models.DomainModels
+@model List<Product_Management.Models.DTO.CartProductDTO>
+@inject SignInManager<UserModel> signInManager;
+
+@if(!signInManager.IsSignedIn(User))
+{
+    <h1 class="text-danger text-center">Please login to View your Cart</h1>
+    return;
+} 
 
 <partial name="_Notification" />
+
+@if (Model.Count <= 0)
+{
+    <h1 class="text-danger text-center">No Products in Cart</h1>
+    return;
+}
 
 <div class="container-fluid mb-5 ">
     @foreach(var item in Model)

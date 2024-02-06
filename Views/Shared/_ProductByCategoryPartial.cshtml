@@ -28,9 +28,9 @@
                         @if (!User.IsInRole("Admin"))
                         {
                             <div class="sideicons">
-                                <button class="sideicons-btn">
+                                <a asp-action="Add" asp-controller="Cart" asp-route-id="@product.ProductId" class="sideicons-btn">
                                     <i class="bi bi-cart-plus-fill" style="font-size:1.8rem;"></i>
-                                </button>
+                                </a>
                                 <button class="sideicons-btn">
                                     <i class="bi bi-heart" style="font-size:1.25rem;"></i>
                                 </button>

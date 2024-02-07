@@ -8,9 +8,20 @@
 
 @if(!signInManager.IsSignedIn(User))
 {
-    <h1 class="text-danger text-center">Please login to View your Cart</h1>
+    <h1 class="text-danger text-center">Please Login to View your Cart</h1>
     return;
 } 
+
+@if(User.IsInRole("Admin"))
+{
+    <script type="text/javascript">
+        function redirectToPreviousPage() {
+            window.history.back();
+        }
+
+        redirectToPreviousPage();
+    </script>
+}
 
 <partial name="_Notification" />
 

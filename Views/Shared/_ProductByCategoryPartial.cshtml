@@ -18,6 +18,10 @@
             <div class="col-md-3">
                 <div class="product-single-card">
                     <div class="product-top-area">
+                        @if (product.IsTrending)
+                        {
+                            <div class="trending-label">Trending</div>
+                        }
                         <div class="product-discount">
                             &#8377;@product.ProductPrice
                         </div>

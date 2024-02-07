@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Product_Management.Data;
@@ -7,6 +8,7 @@ using Product_Management.Models.DTO;
 
 namespace Product_Management.Controllers
 {
+    //[Authorize]
     public class CartController : Controller
     {
         private readonly ApplicationDbContext context;
@@ -93,6 +95,29 @@ namespace Product_Management.Controllers
                 }
             }
             TempData["cartDelete"] = "Product Removed from the Cart";
+            return RedirectToAction("Index", "Cart");
+        }
+
+
+        public async Task<IActionResult> Reduce(Guid id)
+        {
+            if (id != Guid.Empty)
+            {
+                var item = context.CartTable.FirstOrDefault(x => x.CartId == id);
+                if (item != null)
+                {
+                    if (item.Quantity > 1)
+                    {
+                        item.Quantity--;
+                        await context.SaveChangesAsync();
+
+                    }
+                    else if (item.Quantity == 1)
+                    {
+                        return RedirectToAction("Delete", new { id = item.CartId });
+                    }
+                }
+            }
             return RedirectToAction("Index", "Cart");
         }
     }

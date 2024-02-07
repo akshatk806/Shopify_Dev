@@ -29,18 +29,18 @@
                     </div>
 
                     <div class="form-floating mb-3">
-                        <input asp-for="ProductName" type="text" class="form-control" id="floatingInput"
+                        <input asp-for="ProductName" type="text" class="form-control" id="floatingInput" required
                                placeholder="Product Name">
                         <label asp-for="ProductName">Product Name</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <textarea asp-for="ProductDesc" class="form-control" id="floatingTextarea" style="height: 150px;"
+                        <textarea asp-for="ProductDesc" class="form-control" id="floatingTextarea" style="height: 150px;" required
                                   placeholder="Product Description">
                             </textarea>
                         <label asp-for="ProductDesc">Product Description</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input asp-for="ProductPrice" type="text" class="form-control" id="floatingInput"
+                        <input asp-for="ProductPrice" type="text" class="form-control" id="floatingInput" required
                                placeholder="Product Price">
                         <label asp-for="ProductPrice">Product Price (in Rs.)</label>
                     </div>

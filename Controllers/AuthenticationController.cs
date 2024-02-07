@@ -41,6 +41,11 @@ namespace Product_Management.Controllers
         public async Task<IActionResult> Login(LoginRequestDTO request)
         {
             var user = await userManager.Users.FirstOrDefaultAsync(x => x.Email == request.Email);
+            if(user == null)
+            {
+                TempData["deactiveLogin"] = "Invalid User!";
+                return RedirectToAction("Login", "Authentication");
+            }
             if (user.IsActive == false && user.Email.Contains("admin") == false)
             {
                 TempData["deactiveLogin"] = "Your account has been deactivated by the admin!";

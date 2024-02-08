@@ -1,6 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Identity;
 @using Product_Management.Models.DomainModels
 @inject SignInManager<UserModel> signInManager;
+@inject UserManager<UserModel> userManager;
 
 
 <!DOCTYPE html>
@@ -157,6 +158,10 @@
                                 @if(User.IsInRole("Admin"))
                                 {
                                     <a asp-area="" asp-action="Index" asp-controller="Admin" class="dropdown-item">My Dashboard</a> 
+                                }
+                                @if(User.IsInRole("User"))
+                                {
+                                    <a asp-area="" asp-action="Index" asp-controller="Profile" asp-route-id="@userManager.GetUserId(User)" class="dropdown-item">My Profile</a>
                                 }
                                 <a asp-area="" asp-action="Logout" asp-controller="Authentication" class="dropdown-item">Log Out</a>
                             </div>

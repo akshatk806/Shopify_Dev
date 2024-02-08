@@ -4,6 +4,7 @@
     ViewData["Title"] = "Home Page";
     var trendingProducts = ViewBag.trendingProducts as List<Product_Management.Models.DomainModels.Product>;
     var CategoryList = ViewBag.CategoryList as List<Product_Management.Models.DomainModels.Category>;
+    var FavList = ViewBag.FavList as List<Product_Management.Models.DomainModels.FavModel>;
     var prices = new List<int?> { 500, 1000, 2000, 5000, 10000, 50000, 100000 };
 
 }
@@ -429,7 +430,7 @@
                                         <a asp-action="Add" asp-controller="Fav" asp-route-id="@product.ProductId" class="sideicons-btn tooltip">
                                             <span class="tooltiptext bg-danger">Add To Favorite</span>
                                             <i class="bi bi-heart" style="font-size:1.25rem;"></i>
-                                        </a>
+                                        </a> 
                                     </div>
                                 }
                             </div>

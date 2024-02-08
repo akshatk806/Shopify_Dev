@@ -172,7 +172,7 @@ namespace Product_Management.Controllers
                 return RedirectToAction("Index", "Product");
             }
 
-            string uniqueFileName = "";
+            string uniqueFileName = string.Empty;
             if (request.ImagePath != null)
             {
                 if(existingProduct.ProductImageURL != null)
@@ -180,17 +180,10 @@ namespace Product_Management.Controllers
                     string filepath = Path.Combine(webHostEnvironment.WebRootPath, "ProductImage",existingProduct.ProductImageURL);
                     if(System.IO.File.Exists(filepath))
                     {
-                        using (var fileStream = new FileStream(filepath, FileMode.Open, FileAccess.Read, FileShare.Read))
-                        {
-                            
-                        }
                         System.IO.File.Delete(filepath);
                     }
                 }
-                string uploadFoler = Path.Combine(webHostEnvironment.WebRootPath, "ProductImage");
-                uniqueFileName = Guid.NewGuid().ToString() + "_" + request.ImagePath.FileName;
-                string filePath = Path.Combine(uploadFoler, uniqueFileName);
-                request.ImagePath.CopyTo(new FileStream(filePath, FileMode.Create));
+                uniqueFileName = UploadImage(request);
             }
 
             existingProduct.ProductImageURL = uniqueFileName;
@@ -200,6 +193,22 @@ namespace Product_Management.Controllers
 
             return RedirectToAction("Index", "Product");
         }
+        private string UploadImage(UpdateProductRequestDTO model)
+        {
+            string uniqueFileName = string.Empty;
+            if (model.ImagePath != null)
+            {
+                string uploadFolder = Path.Combine(webHostEnvironment.WebRootPath, "ProductImage");    
+                uniqueFileName = Guid.NewGuid().ToString() + "_" + model.ImagePath.FileName;
+                string FilePath = Path.Combine(uploadFolder, uniqueFileName);
+                using (var fileStream = new FileStream(FilePath, FileMode.Create))
+                {
+                    model.ImagePath.CopyTo(fileStream);
+                }
+            }
+            return uniqueFileName;
+        }
+
 
         [HttpGet("/Active/{id}")]
         public async Task<IActionResult> Active(Guid id)

@@ -23,6 +23,7 @@ namespace Product_Management.Controllers
             var allProducts = _context.Products.Include(x => x.Category).Where(x => x.IsActive == true).OrderByDescending(x => x.ProductCreatedAt).ToList();
             ViewBag.trendingProducts = allProducts.Where(x => x.IsTrending == true).Where(x => x.IsActive == true).OrderByDescending(x => x.ProductCreatedAt).ToList();
             ViewBag.CategoryList = _context.Categories.ToList();
+            ViewBag.FavList = _context.FavTable.ToList();
             return View(allProducts);
         }
 

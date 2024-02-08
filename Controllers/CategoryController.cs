@@ -32,6 +32,13 @@ namespace Product_Management.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(AddCategoryRequestDTO request)
         {
+            var existingCategory = await context.Categories.FirstOrDefaultAsync(x => x.CategoryName.ToLower() == request.CategoryName.ToLower());
+            if (existingCategory != null)
+            {
+                TempData["duplicateCategory"] = String.Format("Category {0} is Already Exists", request.CategoryName);
+                return RedirectToAction("Add", "Category");
+            }
+
             var newCategory = new Category()
             {
                 CategoryName = request.CategoryName

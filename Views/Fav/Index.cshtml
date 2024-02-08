@@ -10,6 +10,17 @@
 } 
 <partial name="_Notification" />
 
+@if (User.IsInRole("Admin"))
+{
+    <script type="text/javascript">
+        function redirectToPreviousPage() {
+            window.history.back();
+        }
+
+        redirectToPreviousPage();
+    </script>
+}
+
 @if(Model.Count <= 0)
 {
     <h1 class="text-danger text-center">No Favourite Products</h1>

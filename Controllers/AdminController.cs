@@ -5,6 +5,7 @@ using Product_Management.Data;
 using Product_Management.Migrations.ApplicationDb;
 using Product_Management.Models.DomainModels;
 using Product_Management.Models.DTO;
+using Product_Management.Services;
 
 namespace CustomIdentity.Controllers
 {
@@ -15,13 +16,15 @@ namespace CustomIdentity.Controllers
         private readonly UserManager<UserModel> userManager;
         private readonly AuthDbContext context;
         private readonly ApplicationDbContext dbContext;
+        private readonly EmailSender emailContext;
 
-        public AdminController(SignInManager<UserModel> signInManager, UserManager<UserModel> userManager, AuthDbContext context, ApplicationDbContext dbContext)
+        public AdminController(SignInManager<UserModel> signInManager, UserManager<UserModel> userManager, AuthDbContext context, ApplicationDbContext dbContext, EmailSender emailSender)
         {
             this.signInManager = signInManager;
             this.userManager = userManager;
             this.context = context;
             this.dbContext = dbContext;
+            this.emailContext = emailSender;
         }
         public IActionResult Index()
         {
@@ -77,6 +80,10 @@ namespace CustomIdentity.Controllers
             }
 
             context.SaveChanges();
+            if(oldPassword != newPassword)
+            {
+                await emailContext.SendEmail(request.Email, "Your Password is changed by the Admin" , "\nNew Password: " + existingUser.Password);
+            }   
             TempData["usersuccess"] = "User Updated Successfully";
             return RedirectToAction("GetAllUsers", "Admin");
         }

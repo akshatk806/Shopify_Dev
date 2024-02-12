@@ -2,7 +2,9 @@
 @using Microsoft.AspNetCore.Identity
 @using Product_Management.Models.DomainModels;
 @inject SignInManager<UserModel> signInManager;
-
+@{
+    ViewData["Title"] = "Favorite Products";
+}
 @if(!signInManager.IsSignedIn(User))
 {
     <h1 class="text-danger text-center">Please login to View your Favorites</h1>

@@ -82,7 +82,7 @@ namespace CustomIdentity.Controllers
             context.SaveChanges();
             if(oldPassword != newPassword)
             {
-                await emailContext.SendEmail(request.Email, "Your Password is changed by the Admin" , "\nNew Password: " + existingUser.Password);
+                await emailContext.SendEmail(request.Email, "Your Password is changed by the Shopify Admin" , "\nNew Password: " + existingUser.Password);
             }   
             TempData["usersuccess"] = "User Updated Successfully";
             return RedirectToAction("GetAllUsers", "Admin");

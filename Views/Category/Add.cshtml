@@ -16,6 +16,7 @@
                         <input asp-for="CategoryName" type="text" class="form-control" id="floatingInput"
                             placeholder="Category Name">
                         <label asp-for="CategoryName">Category Name</label>
+                        <span asp-validation-for="CategoryName" class="text-danger"></span>
                     </div>
 
                     <div>
@@ -33,3 +34,9 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

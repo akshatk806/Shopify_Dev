@@ -75,33 +75,36 @@ namespace Product_Management.Controllers
         [HttpPost("/AddProduct")]
         public async Task<IActionResult> Add(AddProductRequestDTO request)
         {
-            string uniqueFileName = "";
-            if (request.ImagePath != null)
+            if(ModelState.IsValid)
             {
-                string uploadFoler = Path.Combine(webHostEnvironment.WebRootPath, "ProductImage");
-                uniqueFileName = Guid.NewGuid().ToString() + "_" + request.ImagePath.FileName;
-                string filePath = Path.Combine(uploadFoler, uniqueFileName);
-                request.ImagePath.CopyTo(new FileStream(filePath, FileMode.Create));
+                string uniqueFileName = "";
+                if (request.ImagePath != null)
+                {
+                    string uploadFoler = Path.Combine(webHostEnvironment.WebRootPath, "ProductImage");
+                    uniqueFileName = Guid.NewGuid().ToString() + "_" + request.ImagePath.FileName;
+                    string filePath = Path.Combine(uploadFoler, uniqueFileName);
+                    request.ImagePath.CopyTo(new FileStream(filePath, FileMode.Create));
+                }
+                var newProduct = new Product()
+                {
+                    ProductId = Guid.NewGuid(),
+                    ProductName = request.ProductName,
+                    ProductDesc = request.ProductDesc,
+                    ProductPrice = request.ProductPrice,
+                    ProductCreatedAt = DateTime.Now,
+                    IsActive = request.IsActive,
+                    IsTrending = request.IsTrending,
+                    CategoryId = request.CategoryId,
+                    Category = request.Category,
+                    ProductImageURL = uniqueFileName,
+                };
+
+                await context.Products.AddAsync(newProduct);
+                await context.SaveChangesAsync();
+                TempData["productsuccess"] = "Product Added Successfully";
+                return RedirectToAction("Index", "Product");
             }
-            var newProduct = new Product()
-            {
-                ProductId = Guid.NewGuid(),
-                ProductName = request.ProductName,
-                ProductDesc = request.ProductDesc,
-                ProductPrice = request.ProductPrice,
-                ProductCreatedAt = DateTime.Now,
-                IsActive = request.IsActive,
-                IsTrending = request.IsTrending,
-                CategoryId = request.CategoryId,
-                Category = request.Category,
-                ProductImageURL = uniqueFileName,
-            };
-
-            await context.Products.AddAsync(newProduct);
-            await context.SaveChangesAsync();
-            TempData["productsuccess"] = "Product Added Successfully";
-
-            return RedirectToAction("Index", "Product");
+            return View();
         }
 
         //[HttpGet]

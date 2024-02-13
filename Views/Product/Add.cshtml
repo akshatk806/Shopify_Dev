@@ -41,20 +41,23 @@
                     </div>
 
                     <div class="form-floating mb-3">
-                        <input asp-for="ProductName" type="text" class="form-control" id="floatingInput" required
+                        <input asp-for="ProductName" type="text" class="form-control" id="floatingInput"
                                placeholder="Product Name">
                         <label asp-for="ProductName">Product Name</label>
+                        <span asp-validation-for="ProductName" class="text-danger"></span>
                     </div>
                     <div class="form-floating mb-3">
-                        <textarea asp-for="ProductDesc" class="form-control" id="floatingTextarea" style="height: 150px;" required
+                        <textarea asp-for="ProductDesc" class="form-control" id="floatingTextarea" style="height: 150px;"
                                placeholder="Product Description">
                         </textarea>
                         <label asp-for="ProductDesc">Product Description</label>
+                        <span asp-validation-for="ProductDesc" class="text-danger"></span>
                     </div>
                     <div class="form-floating mb-3">
-                        <input asp-for="ProductPrice" type="text" class="form-control" id="floatingInput" required
+                        <input asp-for="ProductPrice" type="text" class="form-control" id="floatingInput" 
                                placeholder="Product Price">
                         <label asp-for="ProductPrice">Product Price (in Rs.)</label>
+                        <span asp-validation-for="ProductPrice" class="text-danger"></span>
                     </div>
 
                     <div class="form-floating mb-3">
@@ -63,6 +66,7 @@
                         <div class="col-4">
                             <img src="https://cdn.iconscout.com/icon/free/png-512/free-image-preview-2715690-2265750.png?f=webp&w=512" id="PreviewImage" class="mt-1" style="width:100px; height:100px; border:1px solid black; border-radius:10px; padding:10px" alt="Preview Image" />
                         </div>
+                        <span asp-validation-for="ImagePath" class="text-danger"></span>
                     </div>
 
                   
@@ -87,4 +91,7 @@
 
 @section Scripts {
     <script src="~/js/Preview_Image.js"></script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

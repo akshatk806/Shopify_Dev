@@ -9,7 +9,9 @@ namespace Product_Management.Models.DTO
         public string Email { get; set; }
         [Required]
         public string Name { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Phone Number Required!")]
+        [DataType(DataType.PhoneNumber)]
+        [RegularExpression(@"^[0-9\-\+]+$", ErrorMessage = "Not a valid phone number")]
         public string Phone { get; set; }
         [Required]
         [DataType(DataType.MultilineText)]

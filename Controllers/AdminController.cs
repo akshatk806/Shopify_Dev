@@ -28,7 +28,7 @@ namespace CustomIdentity.Controllers
         }
         public IActionResult Index()
         {
-            ViewBag.totalUsers = context.Users.Where(x => !x.Email.Contains("Admin")).Count();
+            ViewBag.totalUsers = context.Users.Where(x => !x.Email.Contains("Admin") && x.Phone != "NA").Count();
             ViewBag.totalProducts = dbContext.Products.Count();
             return View();
         }
@@ -36,8 +36,8 @@ namespace CustomIdentity.Controllers
         [HttpGet]
         public IActionResult GetAllUsers()
         {
-            var allUsers = userManager.Users.Where(x => !x.Email.Contains("admin")).OrderByDescending(x => x.UserAddedAt).ToList();
-
+            var allUsers = userManager.Users.Where(x => !x.Email.Contains("admin") && x.Phone != "NA").OrderByDescending(x => x.UserAddedAt).ToList();
+            
             return View(allUsers);
         }
 

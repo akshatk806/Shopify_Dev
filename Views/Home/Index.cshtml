@@ -5,11 +5,14 @@
     var trendingProducts = ViewBag.trendingProducts as List<Product_Management.Models.DomainModels.Product>;
     var CategoryList = ViewBag.CategoryList as List<Product_Management.Models.DomainModels.Category>;
     var FavList = ViewBag.FavList as List<Product_Management.Models.DomainModels.FavModel>;
-    var prices = new List<int?> { 500, 1000, 2000, 5000, 10000, 50000, 100000 };
-
+    var prices = new List<int?> { 500, 1000, 2000, 5000, 10000, 50000, 100000 }; 
+    
 }
 @model List<Product_Management.Models.DomainModels.Product>
 @inject SignInManager<UserModel> signInManager;
+@{
+    var currentUserId = signInManager.UserManager.GetUserId(User);
+}
 <partial name="_Notification" />
 <style>
     .user-select-none {
@@ -281,10 +284,22 @@
                                                 <span class="tooltiptext">Add To Cart</span>
                                                 <i class="bi bi-cart-plus-fill" style="font-size:1.8rem;"></i>
                                             </a>
-                                            <a asp-action="Add" asp-controller="Fav" asp-route-id="@product.ProductId" class="sideicons-btn tooltip">
-                                                <span class="tooltiptext bg-danger">Add To Favorite</span>
-                                                <i class="bi bi-heart" style="font-size:1.25rem;"></i>
-                                            </a>
+                                            @if (FavList != null && FavList.FirstOrDefault(x => x.ProductRefId == product.ProductId && x.UserId == currentUserId) != null)
+                                            {
+                                                TempData["deleteFromHomePage"] = true;
+                                                var favItem = FavList.FirstOrDefault(x => x.ProductRefId == product.ProductId && x.UserId == currentUserId);
+                                                <a asp-action="Delete" asp-controller="Fav" asp-route-id="@favItem!.FavId" class="sideicons-btn tooltip">
+                                                    <span class="tooltiptext bg-danger">Remove From Favorite</span>
+                                                    <i class="bi bi-heart-fill" style="font-size:1.25rem; color:red;"></i>
+                                                </a>
+                                            }
+                                            else
+                                            {
+                                                <a asp-action="Add" asp-controller="Fav" asp-route-id="@product.ProductId" class="sideicons-btn tooltip">
+                                                    <span class="tooltiptext bg-danger">Add To Favorite</span>
+                                                    <i class="bi bi-heart" style="font-size:1.25rem;"></i>
+                                                </a>
+                                            }
                                         </div>
                                     }
                                 </div>
@@ -427,10 +442,21 @@
                                             <span class="tooltiptext">Add To Cart</span>
                                             <i class="bi bi-cart-plus-fill" style="font-size:1.8rem;"></i>
                                         </a>
-                                        <a asp-action="Add" asp-controller="Fav" asp-route-id="@product.ProductId" class="sideicons-btn tooltip">
-                                            <span class="tooltiptext bg-danger">Add To Favorite</span>
-                                            <i class="bi bi-heart" style="font-size:1.25rem;"></i>
-                                        </a> 
+                                        @if (FavList != null && FavList.FirstOrDefault(x => x.ProductRefId == product.ProductId && x.UserId == currentUserId) != null)
+                                        {
+                                            var favItem = FavList.FirstOrDefault(x => x.ProductRefId == product.ProductId && x.UserId == currentUserId);
+                                            <a asp-action="Delete" asp-controller="Fav" asp-route-id="@favItem!.FavId" class="sideicons-btn tooltip">
+                                                <span class="tooltiptext bg-danger">Remove From Favorite</span>
+                                                <i class="bi bi-heart-fill" style="font-size:1.25rem; color:red;"></i>
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <a asp-action="Add" asp-controller="Fav" asp-route-id="@product.ProductId" class="sideicons-btn tooltip">
+                                                <span class="tooltiptext bg-danger">Add To Favorite</span>
+                                                <i class="bi bi-heart" style="font-size:1.25rem;"></i>
+                                            </a>
+                                        }
                                     </div>
                                 }
                             </div>

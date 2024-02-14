@@ -91,6 +91,11 @@ namespace Product_Management.Controllers
                 }
             }
             TempData["cartDelete"] = "Product Removed from the Favorites";
+
+            if (Convert.ToBoolean(TempData["deleteFromHomePage"]))
+            {
+                return RedirectToAction("Index", "Home");
+            }
             return RedirectToAction("Index", "Fav");
         }
     }

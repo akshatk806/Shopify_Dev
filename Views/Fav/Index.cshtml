@@ -59,6 +59,7 @@
                                 </div>
                                 <div class="row pt-1">
                                     <div class="col-9 mb-1 d-flex justify-content-between">
+                                        @{TempData["deleteFromHomePage"] = false;}
                                         <div class="d-flex justify-content-between" style="width:18rem">
                                             <a asp-action="Delete" asp-controller="Fav" asp-route-id="@item.FavId" class="btn btn-danger remove">Remove from Favorites</a>
                                         </div>

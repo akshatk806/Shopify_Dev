@@ -51,6 +51,8 @@ app.UseStaticFiles(new StaticFileOptions()
     RequestPath = new PathString("/Content")
 });
 
+// Error Page
+app.UseStatusCodePagesWithReExecute("/Error/{0}");
 
 app.UseRouting();
 

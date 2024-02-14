@@ -45,7 +45,10 @@ namespace CustomIdentity.Controllers
         public IActionResult UpdateUser(string id)
         {
             var user = userManager.Users.FirstOrDefault(x => x.Id == id);
-
+            if(user == null)
+            {
+                return NotFound();
+            }
             return View(user);
         }
 

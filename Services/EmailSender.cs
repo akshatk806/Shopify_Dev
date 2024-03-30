@@ -9,8 +9,8 @@ namespace Product_Management.Services
         {
             try
             {
-                string fromMail = "akshat.kumar@successive.tech";
-                string fromPassword = "kkzu bfjp cfkc vasl";
+                string fromMail = "akshatk8006@gmail.com";
+                string fromPassword = "kogd lowe qhhc wlsp";
 
                 MailMessage message = new MailMessage();
                 message.From = new MailAddress(fromMail);

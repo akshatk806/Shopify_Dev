@@ -25,7 +25,8 @@ namespace Product_Management.Data
                 Address = "Noida Office",
                 Phone = "NA",
                 EmailConfirmed = true,
-                PhoneNumberConfirmed = true
+                PhoneNumberConfirmed = true,
+                Password = "Admin@123"
             };
 
             var isUserExists = await userManagar.FindByEmailAsync(user.Email);

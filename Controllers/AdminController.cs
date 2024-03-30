@@ -2,9 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Product_Management.Data;
-using Product_Management.Migrations.ApplicationDb;
 using Product_Management.Models.DomainModels;
-using Product_Management.Models.DTO;
 using Product_Management.Services;
 
 namespace CustomIdentity.Controllers
@@ -83,10 +81,10 @@ namespace CustomIdentity.Controllers
             }
 
             context.SaveChanges();
-            if(oldPassword != newPassword)
+            if (oldPassword != newPassword)
             {
-                await emailContext.SendEmail(request.Email, "Your Password is changed by the Shopify Admin" , "\nNew Password: " + existingUser.Password);
-            }   
+                await emailContext.SendEmail(request.Email, "Your Password is changed by the Shopify Admin", "\nNew Password: " + existingUser.Password);
+            }
             TempData["usersuccess"] = "User Updated Successfully";
             return RedirectToAction("GetAllUsers", "Admin");
         }

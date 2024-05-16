@@ -63,13 +63,21 @@
         text-align: center;
         color: #191a3c;
     }
+
+    #discount-MRP{
+        color: #3cda3c;
+    }
+
+    #total-amount {
+        font-size:1.25rem
+    }
 </style>
 
 <div class="container-fluid mb-5 ">
-    @foreach(var item in Model)
-    { 
-        <div class="row d-flex  flex-column align-items-center ">
-            <div class="col col-lg-8 mb-4 mb-lg-0">
+    <div class="row">
+        <div class="col col-lg-8 mb-4 mb-lg-0">
+            @foreach (var item in Model)
+            {
                 <div class="card mb-3" style="border-radius: .5rem;">
                     <div class="row g-0">
                         <div class="col-md-3 gradient-custom text-center p-1"
@@ -110,7 +118,7 @@
                                         <div class="d-flex justify-content-between">
                                             <a asp-action="Delete" asp-controller="Cart" asp-route-id="@item.CartId" class="btn btn-danger remove">Remove from cart</a>
                                         </div>
-                                        <div class="amount-box d-flex align-items-center" >
+                                        <div class="amount-box d-flex align-items-center">
                                             <a asp-action="Reduce" asp-controller="Cart" asp-route-id="@item.CartId" class="minus-box">
                                                 <i class="fa fa-minus"></i>
                                             </a>
@@ -126,9 +134,30 @@
                         </div>
                     </div>
                 </div>
+            }
+        </div>
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Cart Summary</h5>
+                    <hr>
+                    <div>
+                        <p><b>PRICE DETAILS (<span id="total-items">@Model.Sum(item => item.Quantity) Item)</span></b></p>
+                        <p><span>Total MRP:</span> <span id="total-MRP" class="float-end">&#8377; @(Model.Sum(item => item.ProductPrice * item.Quantity * 2))</span></p>
+                        <p><span>Discount on MRP:</span> <span id="discount-MRP" class="float-end">-&#8377; @(Model.Sum(item => item.ProductPrice * item.Quantity))</span></p>
+                        <p><span>Shipping Fee:</span> <span id="shipping" class="float-end">&#8377; 99</span></p>
+                    </div>
+                    <div>
+                        <hr>
+                        <b id="total-amount" class="text-dark"><span>Total Amount</span> <span class="float-end">&#8377; @(Model.Sum(item => item.ProductPrice * item.Quantity * 2 - item.ProductPrice * item.Quantity) + 99)</span></b>
+                    </div>
+                    <div class="mt-2" style="text-align: center;">
+                        <a href="#" class="btn btn-primary" style="width: 100%;"><b>PLACE ORDER</b></a> <!-- Make the button full-width -->
+                    </div>
+                </div>
             </div>
         </div>
-    }
+    </div>
 </div>
 @section Scripts {
     <script src="~/js/ProductTable.js"></script>

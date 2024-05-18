@@ -4,6 +4,7 @@ using Microsoft.Extensions.FileProviders;
 using Product_Management.Data;
 using Product_Management.Models.DomainModels;
 using Product_Management.Services;
+using Stripe;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -55,6 +56,8 @@ app.UseStaticFiles(new StaticFileOptions()
 app.UseStatusCodePagesWithReExecute("/Error/{0}");
 
 app.UseRouting();
+
+StripeConfiguration.ApiKey = builder.Configuration.GetSection("Stripe:SecretKey").Get<string>();
 
 app.UseAuthorization();
 

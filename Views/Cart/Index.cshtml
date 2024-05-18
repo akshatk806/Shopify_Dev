@@ -152,7 +152,7 @@
                         <b id="total-amount" class="text-dark"><span>Total Amount</span> <span class="float-end">&#8377; @(Model.Sum(item => item.ProductPrice * item.Quantity * 2 - item.ProductPrice * item.Quantity) + 99)</span></b>
                     </div>
                     <div class="mt-2" style="text-align: center;">
-                        <a href="#" class="btn btn-primary" style="width: 100%;"><b>PLACE ORDER</b></a> <!-- Make the button full-width -->
+                        <a asp-action="CheckOut" asp-controller="Cart" class="btn btn-primary" style="width: 100%;"><b>PLACE ORDER</b></a>
                     </div>
                 </div>
             </div>

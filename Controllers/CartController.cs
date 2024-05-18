@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using Product_Management.Data;
 using Product_Management.Models.DomainModels;
 using Product_Management.Models.DTO;
+using Stripe;
+using Stripe.Checkout;
 
 namespace Product_Management.Controllers
 {
@@ -119,6 +121,112 @@ namespace Product_Management.Controllers
                 }
             }
             return RedirectToAction("Index", "Cart");
+        }
+
+        public async Task<IActionResult> CheckOut()
+        {
+            var userId = signInManager.UserManager.GetUserId(User);
+            var cartItems = await context.CartTable.Where(x => x.UserId == userId).ToListAsync();
+            var productList = await context.Products.ToListAsync();
+
+            var finalProductList = cartItems.Join(
+                                productList,
+                                cart => cart.ProductRefId,
+                                product => product.ProductId,
+                                (cart, product) => new CartProductDTO()
+                                {
+                                    ProductId = product.ProductId,
+                                    ProductName = product.ProductName,
+                                    ProductImageURL = product.ProductImageURL,
+                                    ProductPrice = product.ProductPrice,
+                                    CartId = cart.CartId,
+                                    Quantity = cart.Quantity,
+                                    UserId = cart.UserId
+                                }
+                ).ToList();
+
+            var user = await userManager.GetUserAsync(User);
+            string userEmail = user?.Email; 
+
+            var domain = "https://localhost:7051/";
+
+            var options = new SessionCreateOptions
+            {
+                SuccessUrl = domain + $"Cart/OrderConfirmation",
+                CancelUrl = domain + $"Cart/Index",
+                LineItems = new List<SessionLineItemOptions>(),
+                Mode = "payment",
+                CustomerEmail = userEmail,
+            };
+
+            foreach (var product in finalProductList)
+            {
+                var sessionListItem = new SessionLineItemOptions
+                {
+                    PriceData = new SessionLineItemPriceDataOptions
+                    {
+                        UnitAmount = product.ProductPrice * 100,
+                        Currency = "INR",
+                        ProductData = new SessionLineItemPriceDataProductDataOptions
+                        {
+                            Name = product.ProductName.ToString()
+                        },
+                    },
+                    Quantity = product.Quantity
+                };
+                
+                options.LineItems.Add(sessionListItem);
+            }
+
+            var shippingFee = new SessionLineItemOptions
+            {
+                PriceData = new SessionLineItemPriceDataOptions
+                {
+                    UnitAmount = 9900,
+                    Currency = "INR",
+                    ProductData = new SessionLineItemPriceDataProductDataOptions
+                    {
+                        Name = "Shipping Fee"
+                    },
+                },
+                Quantity = 1
+            };
+
+            options.LineItems.Add(shippingFee);
+
+            var service = new SessionService();
+            Session session = service.Create(options);
+            TempData["session"] = session.Id;
+
+            Response.Headers.Add("Location", session.Url);
+
+            return new StatusCodeResult(303);
+        }
+
+        public IActionResult OrderConfirmation()
+        {
+            var service = new SessionService();
+            if (TempData["session"] == null)
+            {
+                return new StatusCodeResult(404);
+            }
+
+            Session session = service.Get(TempData["session"].ToString());
+
+            if (session.PaymentStatus == "paid")
+            {
+                var transactionId = session.PaymentIntentId.ToString(); 
+                return View("Success");
+            }
+            else
+            {
+                return RedirectToAction("Index", "Cart");
+            }
+        }
+
+        public IActionResult Success()
+        {
+            return View();
         }
     }
 }

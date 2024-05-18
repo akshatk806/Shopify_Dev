@@ -162,6 +162,7 @@
                                 @if(User.IsInRole("User"))
                                 {
                                     <a asp-area="" asp-action="Index" asp-controller="Profile" asp-route-id="@userManager.GetUserId(User)" class="dropdown-item">My Profile</a>
+                                    <a asp-area="" asp-action="Index" asp-controller="Order" asp-route-id="@userManager.GetUserId(User)" class="dropdown-item">My Orders</a>
                                 }
                                 <a asp-area="" asp-action="Logout" asp-controller="Authentication" class="dropdown-item">Log Out</a>
                             </div>

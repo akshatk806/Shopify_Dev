@@ -1,0 +1,56 @@
+﻿@model List<Product_Management.Models.DTO.OrderViewModelDTO>
+@{
+    ViewData["Title"] = "My Orders";
+}
+
+<div class="container-fluid px-4 small">
+    <div class="row">
+        <div class="col-6">
+            <h4 class="mb-4">ORDER LIST</h4>
+        </div>
+    </div>
+    <div class="row g-4">
+        <div class="col-12">
+            <div class="bg-light rounded h-100 p-4">
+                @if (Model.Count == 0)
+                {
+                    <h1 class="text-center">NO ORDER HAS BEEN MADE AS OF NOW !</h1>
+                }
+                else
+                {
+                    <table id="myTable" class="table cell-border">
+                        <thead>
+                            <tr>
+                                <th scope="col">Order Id</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Category</th>
+                                <th scope="col">Price (in Rs.)</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col">Total Price (in Rs.)</th>
+                                <th scope="col">Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var order in Model)
+                            {
+                                <tr style="background-color: inherit">
+                                    <td>@order.OrderId</td>
+                                    <td>@order.ProductName</td>
+                                    <td>@order.ProductCategory</td>
+                                    <td>@order.ProductPrice</td>
+                                    <td>@order.ProductQuantity</td>
+                                    <td>@(order.ProductPrice * order.ProductQuantity)</td>
+                                    <td>@(order.Date.ToString("MMMM d, h:mm tt")) </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/ProductTable.js"></script>
+}

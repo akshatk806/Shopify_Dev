@@ -17,6 +17,8 @@ namespace Product_Management.Models.DTO
         public int ProductPrice { get; set; }
 
         public string ProductImageURL { get; set; }
+
+        public DateTime CartAddedAt { get; set; }
     }
 
 }

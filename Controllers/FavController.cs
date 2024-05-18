@@ -35,9 +35,10 @@ namespace Product_Management.Controllers
                                     ProductImageURL = product.ProductImageURL,
                                     ProductPrice = product.ProductPrice,
                                     FavId = fav.FavId,
-                                    UserId = fav.UserId
+                                    UserId = fav.UserId,
+                                    FavAddedAt = fav.FavAddedAt
                                 }
-                ).ToList();
+                ).OrderByDescending(x => x.FavAddedAt).ToList();
 
 
 

@@ -9,5 +9,6 @@ namespace Product_Management.Models.DomainModels
         public int Quantity { get; set; }
         public string UserId { get; set; }
         public Guid ProductRefId { get; set; }
+        public DateTime CartAddedAt { get; set; } = DateTime.Now;
     }
 }

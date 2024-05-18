@@ -11,5 +11,7 @@
         public int ProductPrice { get; set; }
 
         public string ProductImageURL { get; set; }
+
+        public DateTime FavAddedAt { get; set; }
     }
 }

@@ -41,9 +41,10 @@ namespace Product_Management.Controllers
                                     ProductPrice = product.ProductPrice,
                                     CartId = cart.CartId,
                                     Quantity = cart.Quantity,
-                                    UserId = cart.UserId
+                                    UserId = cart.UserId,
+                                    CartAddedAt = cart.CartAddedAt
                                 }
-                ).ToList();
+                ).OrderByDescending(x => x.CartAddedAt).ToList();
                    
 
 
@@ -240,6 +241,12 @@ namespace Product_Management.Controllers
             if (session.PaymentStatus == "paid")
             {
                 var transactionId = session.PaymentIntentId.ToString();
+
+                var ordersList = await context.Orders.Where(x => x.UserId == userId).ToListAsync(); 
+                foreach(var order in ordersList)
+                {
+                    order.TransactionId = transactionId;
+                }
 
                 var cartItems = await context.CartTable.Where(x => x.UserId == userId).ToListAsync();
                 foreach(var cartItem in cartItems)

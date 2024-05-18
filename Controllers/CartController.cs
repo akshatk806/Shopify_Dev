@@ -200,11 +200,35 @@ namespace Product_Management.Controllers
 
             Response.Headers.Add("Location", session.Url);
 
+            var finalOrderList = cartItems.Join(
+                                productList,
+                                cart => cart.ProductRefId,
+                                product => product.ProductId,
+                                (cart, product) => new Order
+                                {
+                                    OrderId = Guid.NewGuid(),
+                                    ProductPrice = product.ProductPrice,
+                                    ProductQuantity = cart.Quantity,
+                                    UserId = cart.UserId,
+                                    ProductRefId = product.ProductId,
+                                    Date = DateTime.Now
+                                }
+                            ).ToList();
+
+
+            foreach (var order in finalOrderList)
+            {
+                await context.Orders.AddAsync(order);
+            }
+            await context.SaveChangesAsync();
+
             return new StatusCodeResult(303);
         }
 
-        public IActionResult OrderConfirmation()
+        public async Task<IActionResult> OrderConfirmation()
         {
+            var userId = signInManager.UserManager.GetUserId(User);
+
             var service = new SessionService();
             if (TempData["session"] == null)
             {
@@ -215,7 +239,14 @@ namespace Product_Management.Controllers
 
             if (session.PaymentStatus == "paid")
             {
-                var transactionId = session.PaymentIntentId.ToString(); 
+                var transactionId = session.PaymentIntentId.ToString();
+
+                var cartItems = await context.CartTable.Where(x => x.UserId == userId).ToListAsync();
+                foreach(var cartItem in cartItems)
+                {
+                    context.Remove(cartItem);   
+                }
+                await context.SaveChangesAsync();
                 return View("Success");
             }
             else

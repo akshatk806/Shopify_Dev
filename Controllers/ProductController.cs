@@ -74,6 +74,7 @@ namespace Product_Management.Controllers
         }
 
         [HttpPost("/AddProduct")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(AddProductRequestDTO request)
         {
             if(ModelState.IsValid)
@@ -151,6 +152,7 @@ namespace Product_Management.Controllers
         }
 
         [HttpPost("/UpdateProduct/{id}")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Update(UpdateProductRequestDTO request)
         {
             if (!ModelState.IsValid)

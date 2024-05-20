@@ -12,7 +12,7 @@
             <div class="bg-light rounded h-100 p-4">
                 <h4 class="mb-4">ADD PRODUCT</h4>
                 <form method="post" asp-action="Add" asp-controller="Product" enctype="multipart/form-data">
-
+                    @Html.AntiForgeryToken()
 
                     <div class="form-floating mb-3">
                         <select asp-for="CategoryId" class="form-select form-select-sm mb-3" aria-label="Default select example" placeholder="Select Category">

@@ -12,7 +12,7 @@
                 <h4 class="mb-4">UPDATE PRODUCT</h4>
                 <form method="post" asp-action="Update" asp-controller="Product" enctype="multipart/form-data">
                     <input type="hidden" asp-for="@Model.ProductId" />
-
+                    @Html.AntiForgeryToken()
                     <div class="form-floating mb-3">
                         <select asp-for="CategoryId" class="form-select form-select-sm mb-3" aria-label="Default select example" placeholder="Select Category">
                             <option selected disabled>--Select Category--</option>

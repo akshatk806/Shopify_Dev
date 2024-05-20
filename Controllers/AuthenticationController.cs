@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Product_Management.Constants;
@@ -7,6 +6,7 @@ using Product_Management.Data;
 using Product_Management.Models.DomainModels;
 using Product_Management.Models.DTO;
 using Product_Management.Services;
+using System.Web;
 
 namespace Product_Management.Controllers
 {
@@ -100,6 +100,12 @@ namespace Product_Management.Controllers
         {
             if (ModelState.IsValid)
             {
+                request.Name = HttpUtility.HtmlEncode(request.Name);
+                request.Email = HttpUtility.HtmlEncode(request.Email);
+                request.Address = HttpUtility.HtmlEncode(request.Address);
+                request.Phone = HttpUtility.HtmlEncode(request.Phone);
+                request.Password = HttpUtility.HtmlEncode(request.Password);
+
                 var user = new UserModel()
                 {
                     UserName = request.Email,

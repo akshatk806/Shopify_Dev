@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Product_Management.Data;
 using Product_Management.Models.DomainModels;
 using Product_Management.Services;
+using System.Web;
 
 namespace CustomIdentity.Controllers
 {
@@ -62,6 +63,12 @@ namespace CustomIdentity.Controllers
             {
                 return NotFound();
             }
+
+            request.Name = HttpUtility.HtmlEncode(request.Name);
+            request.Email = HttpUtility.HtmlEncode(request.Email);
+            request.Address = HttpUtility.HtmlEncode(request.Address);
+            request.Phone = HttpUtility.HtmlEncode(request.Phone);
+            request.Password = HttpUtility.HtmlEncode(request.Password);
 
             var oldPassword = existingUser.Password;
             var newPassword = request.Password;

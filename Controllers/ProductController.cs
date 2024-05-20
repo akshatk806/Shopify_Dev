@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Product_Management.Data;
 using Product_Management.Models.DomainModels;
 using Product_Management.Models.DTO;
+using System.Web;
 
 namespace Product_Management.Controllers
 {
@@ -77,6 +78,9 @@ namespace Product_Management.Controllers
         {
             if(ModelState.IsValid)
             {
+                request.ProductName = HttpUtility.HtmlEncode(request.ProductName);
+                request.ProductDesc = HttpUtility.HtmlEncode(request.ProductDesc);
+
                 string uniqueFileName = "";
                 if (request.ImagePath != null)
                 {
@@ -153,6 +157,10 @@ namespace Product_Management.Controllers
             {
                 return View(request);
             }
+
+            request.ProductName = HttpUtility.HtmlEncode(request.ProductName);
+            request.ProductDesc = HttpUtility.HtmlEncode(request.ProductDesc);
+
             var existingProduct = await context.Products.FindAsync(request.ProductId);
             if (existingProduct == null)
             {

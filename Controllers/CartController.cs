@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Product_Management.Data;
 using Product_Management.Models.DomainModels;
 using Product_Management.Models.DTO;
+using Product_Management.Services;
 using Stripe;
 using Stripe.Checkout;
 
@@ -16,12 +17,14 @@ namespace Product_Management.Controllers
         private readonly ApplicationDbContext context;
         private readonly UserManager<UserModel> userManager;
         private readonly SignInManager<UserModel> signInManager;
+        private readonly EmailSender emailSender;
 
-        public CartController(ApplicationDbContext context, UserManager<UserModel> userManager, SignInManager<UserModel> signInManager)
+        public CartController(ApplicationDbContext context, UserManager<UserModel> userManager, SignInManager<UserModel> signInManager, EmailSender emailSender)
         {
             this.context = context;
             this.userManager = userManager;
             this.signInManager = signInManager;
+            this.emailSender = emailSender;
         }
         public IActionResult Index()
         {
@@ -254,6 +257,9 @@ namespace Product_Management.Controllers
                     context.Remove(cartItem);   
                 }
                 await context.SaveChangesAsync();
+
+                //// await SendConfirmationEmail();
+
                 return View("Success");
             }
             else
@@ -265,6 +271,55 @@ namespace Product_Management.Controllers
         public IActionResult Success()
         {
             return View();
+        }
+
+        private async Task SendConfirmationEmail()
+        {
+            var userId = signInManager.UserManager.GetUserId(User);
+            var userDetail = await userManager.Users.FirstOrDefaultAsync(x => x.Id == userId);
+            var twoMinutesAgo = DateTime.Now.AddMinutes(-2);
+
+            var orders = await context.Orders
+                        .Join(context.Products,
+                              order => order.ProductRefId,
+                              product => product.ProductId,
+                              (order, product) => new OrderViewModelDTO
+                              {
+                                  OrderId = order.OrderId,
+                                  ProductPrice = order.ProductPrice,
+                                  TransactionId = order.TransactionId!,
+                                  ProductQuantity = order.ProductQuantity,
+                                  UserId = order.UserId,
+                                  Date = order.Date,
+                                  ProductName = product.ProductName,
+                                  ProductCategory = product.Category.CategoryName
+                              })
+                        .Where(x => x.UserId == userId && x.Date >= twoMinutesAgo)
+                        .OrderByDescending(x => x.Date)
+                        .ToListAsync();
+
+            var totalAmount = orders.Sum(x => x.ProductQuantity * x.ProductPrice);
+
+            string subject = "Order confirmation from Shopify🚀";
+
+            // Generate HTML for order details table
+            string orderDetailsTable = "<table border='1'><tr><th>Product</th><th>Quantity</th><th>Price</th></tr>";
+            foreach (var order in orders)
+            {
+                orderDetailsTable += $"<tr><td>{order.ProductName}</td><td>{order.ProductQuantity}</td><td>{order.ProductPrice}</td></tr>";
+            }
+            orderDetailsTable += "</table>";
+
+            string body = $"Dear {userDetail.Name},<br/><br/>Thank you for placing an order with Shopify. " +
+                $"We are pleased to confirm the receipt of your order # {orders[0].TransactionId}, dated {DateTime.Now}.<br/><br/>" +
+                $"Order details:<br/><br/>{orderDetailsTable}<br/>" +
+                $"Total Amount: {totalAmount}<br/><br/>" +
+                $"Delivery Address: {userDetail.Address}<br/><br/>" +
+                $"Estimated Delivery Date: {DateTime.Now.AddDays(5).ToString("dddd, MMMM d")}<br/><br/>" +
+                $"Your order is now being processed and we will ensure its prompt dispatch. You will receive " +
+                "a notification once your order has been shipped.<br/><br/>Warm regards,<br/><br/>Shopify";
+
+            await Task.Run(() => emailSender.SendEmail(userDetail.Email!, subject, body));
         }
     }
 }

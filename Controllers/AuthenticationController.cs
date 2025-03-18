@@ -6,6 +6,7 @@ using Product_Management.Data;
 using Product_Management.Models.DomainModels;
 using Product_Management.Models.DTO;
 using Product_Management.Services;
+using System.Security.Claims;
 using System.Web;
 
 namespace Product_Management.Controllers
@@ -152,7 +153,7 @@ namespace Product_Management.Controllers
                         "</p>\r\n<p><br></p>\r\n<p>Happy shopping!</p>\r\n<p><br></p>\r\n<p>Best regards," +
                         "</p>\r\n<p>Shopify Admin</p>";
 
-                    await emailContext.SendEmail(request.Email, subject, body);
+                    // await emailContext.SendEmail(request.Email, subject, body);
 
                     return RedirectToAction("Index", "Home");
                 }
@@ -171,5 +172,56 @@ namespace Product_Management.Controllers
             await signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
+
+        // google login
+        [HttpGet]
+        public IActionResult GoogleLogin(string returnUrl = "/")
+        {
+            var redirectUrl = Url.Action(nameof(GoogleResponse), "Authentication", new { returnUrl });
+            var properties = signInManager.ConfigureExternalAuthenticationProperties("Google", redirectUrl);
+            return Challenge(properties, "Google");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GoogleResponse(string returnUrl = "/")
+        {
+            var info = await signInManager.GetExternalLoginInfoAsync();
+            if (info == null)
+                return RedirectToAction(nameof(Login));
+
+            var signInResult = await signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false);
+            if (signInResult.Succeeded)
+            {
+                return LocalRedirect(returnUrl);
+            }
+            else
+            {
+                // Create user if not exist
+                var email = info.Principal.FindFirstValue(ClaimTypes.Email);
+                var user = await userManager.FindByEmailAsync(email);
+
+                if (user == null)
+                {
+                    user = new UserModel
+                    {
+                        UserName = email,
+                        Email = email,
+                        Name = info.Principal.FindFirstValue(ClaimTypes.Name)
+                    };
+                    var result = await userManager.CreateAsync(user);
+                    if (!result.Succeeded)
+                    {
+                        TempData["deactiveLogin"] = "User creation failed!";
+                        return RedirectToAction(nameof(Login));
+                    }
+                    await userManager.AddToRoleAsync(user, Roles.User.ToString());
+                }
+
+                await userManager.AddLoginAsync(user, info);
+                await signInManager.SignInAsync(user, isPersistent: false);
+                return LocalRedirect(returnUrl);
+            }
+        }
+
     }
 }
